@@ -1,0 +1,142 @@
+@import "./base.css";
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  font-weight: normal;
+}
+
+a,
+.blue {
+  text-decoration: none;
+  color: var(--vt-c-blue);
+  transition: 0.4s;
+}
+
+.logo {
+  border-radius: 50%;
+  background-color: var(--vt-c-blue-soft);
+  padding: 25px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 0.75rem;
+}
+
+.input-group label {
+  /*transform: scale(0.75) translate(-0.5rem, -2.25rem);*/
+  display: block;
+  margin-left: 10px;
+  width: 100%;
+  text-align: left;
+  font-weight: normal;
+  font-size: 12pt;
+}
+
+.form-control {
+  display: block;
+  background-color: var(--vt-c-black);
+  color: var(--vt-c-white);
+  height: 2.5rem;
+  width: 100%;
+  border: 1px solid var(--vt-c-text-dark-2);
+  border-radius: 0.75rem;
+  font-weight: lighter;
+  font-size: 13pt;
+  text-align: center;
+  transition: border 0.2s;
+}
+
+.form-control:focus {
+  outline: none !important;
+  border: 1px solid var(--vt-c-white);
+  /*box-shadow: 0 0 5px #719ECE;*/
+}
+
+.note {
+  color: var(--vt-c-text-dark-2);
+  line-height: 1.35;
+  font-size: 14pt;
+  font-weight: lighter;
+  padding-bottom: 1rem;
+}
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  vertical-align: bottom;
+  border: 0;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%);
+  font-weight: 500;
+  padding: 0.625rem 1.5rem 0.5rem;
+  font-size: .75rem;
+  line-height: 1.5;
+  border-radius: 0.375rem;
+  transition: background 400ms, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  user-select: none;
+  display: inline-block;
+  color: #4f4f4f;
+  text-align: center;
+  text-decoration: none;
+  outline: 0;
+  border: 0;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: var(--vt-c-blue-soft);
+}
+
+.btn-primary.focus, .btn-primary:focus, .btn-primary:hover {
+  color: #fff;
+  background-color: #0c56d0;
+}
+
+.btn-submit {
+  width: 60%;
+  margin: 1.75rem 0;
+}
+
+.auth-form {
+  display: block;
+  text-align: center;
+  width: 17rem;
+}
+
+.auth-form img {
+  margin-bottom: 15px;
+}
+
+.auth-form h1 {
+  font-size: 30pt;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: var(--vt-c-blue-mute);
+  }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active{
+  -webkit-box-shadow: 0 0 0 30px var(--vt-c-black) inset !important;
+  -webkit-text-fill-color: var(--vt-c-white) !important;
+}
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center;
+  }
+
+  #app {
+    display: grid;
+    padding: 0 2rem;
+  }
+}
