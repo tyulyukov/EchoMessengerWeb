@@ -1,9 +1,15 @@
 @import "./base.css";
 
+body {
+  display: flex;
+  place-items: center;
+}
+
 #app {
+  display: grid;
+  padding: 0 2rem;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
 
   font-weight: normal;
 }
@@ -115,6 +121,51 @@ a,
   font-size: 30pt;
 }
 
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.alert-dark {
+  color: #1b1e21;
+  background-color: #d6d8d9;
+  border-color: #c6c8ca;
+}
+
+.spinner-border {
+  display: inline-block;
+  width: 1.75rem;
+  height: 1.75rem;
+  vertical-align: -0.125rem;
+  border-radius: 50%;
+  -webkit-animation: 0.75s linear infinite spinner-border;
+  animation: 0.75s linear infinite spinner-border;
+  color: rgba(248, 249, 250, 1)!important;
+  border: 0.16em solid currentcolor;
+  border-right-color: transparent;
+}
+
+@keyframes spinner-border {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media (hover: hover) {
   a:hover {
     background-color: var(--vt-c-blue-mute);
@@ -127,16 +178,4 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active{
   -webkit-box-shadow: 0 0 0 30px var(--vt-c-black) inset !important;
   -webkit-text-fill-color: var(--vt-c-white) !important;
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    padding: 0 2rem;
-  }
 }
