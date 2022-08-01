@@ -8,6 +8,9 @@
   --vt-c-black-soft: #222222;
   --vt-c-black-mute: #282828;
 
+  --vt-c-main-vulkan: #131522;
+  --vt-c-secondary-steel-gray: #212231;
+
   --vt-c-indigo: #2c3e50;
 
   --vt-c-blue: #283EFF;
@@ -60,7 +63,6 @@
   box-sizing: border-box;
   margin: 0;
   position: relative;
-  font-weight: normal;
 }
 
 body {

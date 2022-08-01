@@ -31,8 +31,6 @@ export const useAuthUserStore = defineStore('auth/user', {
 
             const apiStore = useApiStore()
 
-            console.log(apiStore.jwt)
-
             if (apiStore.jwt)
             {
                 fetch(apiStore.combineUrl('auth/jwt'), {

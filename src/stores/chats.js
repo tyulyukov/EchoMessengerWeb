@@ -11,7 +11,13 @@ export const useChatsStore = defineStore('chats', {
     }),
     actions: {
         loadChats() {
+            if (this.chats)
+                return;
+
+            this.$reset()
             const apiStore = useApiStore()
+
+            this.loading = true
 
             fetch(apiStore.combineUrl('chats/'), {
                 method: 'GET',
@@ -26,6 +32,8 @@ export const useChatsStore = defineStore('chats', {
                         return res.json()
                     }
                     else if (res && res.status === 401) {
+                        this.error = "Not authorized"
+
                         const authUserStore = useAuthUserStore()
 
                         authUserStore.clearUser()
