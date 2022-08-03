@@ -26,7 +26,16 @@ export default defineComponent({
     <div v-if="chatsStore.$state.loading" class="center">
       <div class="spinner-border"></div>
     </div>
-    <ChatCard v-else-if="chatsStore.$state.chats" v-for="chat in chatsStore.$state.chats" :key="chat._id"></ChatCard>
+    <div v-if="chatsStore.$state.error" class="center">
+      <img class="selectable"
+           @click="chatsStore.loadChats"
+           src="src/assets/img/refresh.png"
+           style="width: 35px; height: 35px"/>
+    </div>
+    <ChatCard v-else-if="chatsStore.$state.chats"
+              v-for="chat in chatsStore.$state.chats"
+              :key="chat._id"
+              :chat="chat" />
   </div>
 </template>
 
@@ -64,5 +73,6 @@ export default defineComponent({
 .chats-list {
   padding-bottom: 2rem;
   overflow: auto;
+  width: 100%;
 }
 </style>

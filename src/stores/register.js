@@ -65,6 +65,7 @@ export const useAuthRegisterStore = defineStore('auth/register', {
                     }
                 })
                 .catch(err => {
+                    this.loading = false
                     this.internalError = err
                     this.error = "No connection..."
                 })

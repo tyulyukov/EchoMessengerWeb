@@ -48,6 +48,7 @@ export const useAuthLoginStore = defineStore('auth/login', {
                     }
                 })
                 .catch(err => {
+                    this.loading = false
                     this.internalError = err
                     this.error = "No connection..."
                 })

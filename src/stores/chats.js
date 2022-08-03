@@ -52,6 +52,7 @@ export const useChatsStore = defineStore('chats', {
                     }
                 })
                 .catch(err => {
+                    this.loading = false
                     this.internalError = err
                     this.error = "No connection..."
                 })
