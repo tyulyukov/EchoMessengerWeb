@@ -44,7 +44,7 @@ export default defineComponent({
 <template>
   <div class="search-header">
     <form class="search-form">
-      <input type="text" class="search">
+      <input :disabled="chatsStore.$state.loading" class="search" type="text" placeholder="   &#xF002;  Search" style="font-family:Arial, FontAwesome" />
     </form>
   </div>
 

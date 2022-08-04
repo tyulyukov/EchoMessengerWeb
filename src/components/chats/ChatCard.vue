@@ -4,8 +4,11 @@ import { useChatsStore } from "../../stores/chats";
 import { useApiStore } from "../../stores/api";
 import { useAuthUserStore } from "../../stores/user";
 import { formatDate } from "../../util/dateFormat";
+import CheckMarks from "./CheckMarks.vue";
+import NotificationBadge from "./NotificationBadge.vue";
 
 export default defineComponent({
+  components: { NotificationBadge, CheckMarks },
   setup() {
     const chatsStore = useChatsStore()
     const apiStore = useApiStore()
@@ -54,13 +57,18 @@ export default defineComponent({
         </div>
       </div>
 
-      <div class="meta-info">
+      <div v-if="lastMessage" class="meta-info">
         <div class="time-info">
-          <span v-if="lastMessage">{{ formatDate(lastMessage.sentAt) }}</span>
+          <span>{{ formatDate(lastMessage.sentAt) }}</span>
+        </div>
+        <div class="additional-info">
+          <NotificationBadge v-if="this.chat.unreadMessagesCount > 0"
+                             :notifications="this.chat.unreadMessagesCount" />
+          <CheckMarks v-else-if="lastMessage.sender._id === this.authUserStore.id"
+                      :haveSeen="lastMessage.haveSeen"/>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -68,7 +76,7 @@ export default defineComponent({
   .card {
     border-radius: 20px;
     background-color: var(--vt-c-main-vulkan);
-    transition: background-color 300ms;
+    transition: 300ms ease;
     padding: 15px;
     display: flex;
     width: 100%;
@@ -89,8 +97,16 @@ export default defineComponent({
     margin-right: 10px;
   }
 
-  .card:hover {
+  .card:not(.active):hover {
     background-color: var(--vt-c-secondary-steel-gray);
+  }
+
+  .active {
+    background-color: var(--vt-c-blue);
+  }
+
+  .active .avatar {
+    border: 2px solid var(--vt-c-white);
   }
 
   .card-body {

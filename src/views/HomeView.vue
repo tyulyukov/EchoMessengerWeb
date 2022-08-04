@@ -1,12 +1,12 @@
 <script>
-import { useAuthUserStore } from "../stores/user";
 import { defineComponent } from "vue";
+import { useAuthUserStore } from "../stores/user";
 import { useChatsStore } from "../stores/chats";
-import SelectChatCard from "../components/chats/SelectChatCard.vue";
 import ChatsList from "../components/chats/ChatsList.vue";
+import TextCard from "../components/TextCard.vue";
 
 export default defineComponent({
-  components: { ChatsList, SelectChatCard },
+  components: { TextCard, ChatsList },
   setup() {
     const authUserStore = useAuthUserStore()
     const chatsStore = useChatsStore()
@@ -37,7 +37,7 @@ export default defineComponent({
       <ChatsList />
     </div>
     <div class="middle-column">
-      <SelectChatCard />
+      <TextCard :text="'Select chat'" />
     </div>
   </div>
 </template>
