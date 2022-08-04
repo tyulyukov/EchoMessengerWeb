@@ -1,12 +1,19 @@
-export function formatDate (date) {
+export function formatDate(date) {
     const dateTime = new Date(date)
 
     if (isToday(dateTime))
-        return dateTime.toLocaleTimeString([],{hour: '2-digit', minute:'2-digit'});
+        return `${convert2digits(dateTime.getHours())}:${convert2digits(dateTime.getMinutes())}`
     else if (isThisYear(dateTime))
-        return dateTime.toLocaleTimeString([],{day: '2-digit', month:'2-digit'});
+        return `${convert2digits(dateTime.getDate())}.${convert2digits(dateTime.getMonth() + 1)}`
     else
-        return dateTime.toLocaleTimeString([],{month: '2-digit', year:'numeric'});
+        return `${convert2digits(dateTime.getMonth() + 1)}.${dateTime.getFullYear()}`
+}
+
+export function convert2digits(number) {
+    if (number < 10)
+        return `0${number}`
+
+    return number.toString()
 }
 
 export function isToday(date) {

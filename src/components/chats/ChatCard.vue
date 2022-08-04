@@ -49,7 +49,7 @@ export default defineComponent({
           <p>{{ targetUser.username }}</p>
         </div>
         <div class="last-activity">
-          <p v-if="lastMessage">{{ lastMessage.content }} WWWWWWWWWWWWWWWW<span class="muted" v-if="lastMessage.edits.length > 0"> edited</span></p>
+          <p v-if="lastMessage">{{ lastMessage.content }}<span class="muted" v-if="lastMessage.edits.length > 0"> edited</span></p>
           <p class="muted" v-else>Start the conversation</p>
         </div>
       </div>
@@ -74,11 +74,15 @@ export default defineComponent({
     width: 100%;
     max-width: 100%;
     min-width: 100%;
+    cursor: pointer;
   }
 
   .card .avatar {
-    min-width: 50px;
-    min-height: 50px;
+    --avatar-diameter: 50px;
+    min-width: var(--avatar-diameter);
+    min-height: var(--avatar-diameter);
+    max-width: var(--avatar-diameter);
+    max-height: var(--avatar-diameter);
     background-size: cover;
     border-radius: 50%;
     border: 2px solid var(--vt-c-divider-dark-1);

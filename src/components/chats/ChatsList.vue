@@ -12,6 +12,32 @@ export default defineComponent({
       chatsStore
     }
   },
+  computed: {
+    sortedChats() {
+      let chats = this.chatsStore.$state.chats
+
+      if (!chats || chats.length == 0)
+        return []
+
+      chats.sort((a,b) => {
+        let aLastSentAt, bLastSentAt;
+
+        if (a.messages && a.messages.length > 0)
+          aLastSentAt = new Date(a.messages[0].sentAt)
+        else
+          aLastSentAt = new Date(a.createdAt)
+
+        if (b.messages && b.messages.length > 0)
+          bLastSentAt = new Date(b.messages[0].sentAt)
+        else
+          bLastSentAt = new Date(b.createdAt)
+
+        return bLastSentAt.getTime() - aLastSentAt.getTime()
+      })
+
+      return chats
+    }
+  }
 })
 </script>
 
@@ -33,7 +59,7 @@ export default defineComponent({
            style="width: 35px; height: 35px"/>
     </div>
     <ChatCard v-else-if="chatsStore.$state.chats"
-              v-for="chat in chatsStore.$state.chats"
+              v-for="chat in sortedChats"
               :key="chat._id"
               :chat="chat" />
   </div>
