@@ -22,7 +22,10 @@ export default defineComponent({
     }
   },
   props: {
-    chat: Object
+    chat: {
+      type: Object,
+      required: true
+    }
   },
   computed: {
     targetUser() {
@@ -38,11 +41,19 @@ export default defineComponent({
       return null;
     }
   },
+  methods:{
+    getCardClass() {
+      if (this.chatsStore.$state.selectedChat == this.chat._id)
+        return "card card-active"
+
+      return "card"
+    }
+  }
 })
 </script>
 
 <template>
-  <div class="card">
+  <div @click="chatsStore.selectChat(this.chat._id)" v-bind:class="getCardClass()">
     <div class="avatar" v-bind:style="'background-image: url(' + apiStore.combineUrl(targetUser.avatarUrl) + ')'"></div>
 
     <div class="card-body">
@@ -63,7 +74,7 @@ export default defineComponent({
         </div>
         <div class="additional-info">
           <NotificationBadge v-if="this.chat.unreadMessagesCount > 0"
-                             :notifications="this.chat.unreadMessagesCount" />
+                             :chat="this.chat" />
           <CheckMarks v-else-if="lastMessage.sender._id === this.authUserStore.id"
                       :haveSeen="lastMessage.haveSeen"/>
         </div>
@@ -95,17 +106,18 @@ export default defineComponent({
     border-radius: 50%;
     border: 2px solid var(--vt-c-divider-dark-1);
     margin-right: 10px;
+    transition: 300ms ease;
   }
 
-  .card:not(.active):hover {
+  .card:not(.card-active):hover {
     background-color: var(--vt-c-secondary-steel-gray);
   }
 
-  .active {
+  .card-active {
     background-color: var(--vt-c-blue);
   }
 
-  .active .avatar {
+  .card-active .avatar {
     border: 2px solid var(--vt-c-white);
   }
 

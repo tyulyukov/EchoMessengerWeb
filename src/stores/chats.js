@@ -5,6 +5,7 @@ import { useAuthUserStore } from "./user";
 export const useChatsStore = defineStore('chats', {
     state: () => ({
         chats: null,
+        selectedChat: null,
         error: null,
         loading: false,
         internalError: null
@@ -56,6 +57,9 @@ export const useChatsStore = defineStore('chats', {
                     this.internalError = err
                     this.error = "No connection..."
                 })
+        },
+        selectChat(id) {
+            this.selectedChat = id
         }
     }
 })

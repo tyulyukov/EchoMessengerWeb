@@ -4,7 +4,7 @@ import { useChatsStore } from "../../stores/chats";
 import ChatCard from "./ChatCard.vue";
 
 export default defineComponent({
-  components: {ChatCard},
+  components: { ChatCard },
   setup() {
     const chatsStore = useChatsStore()
 
