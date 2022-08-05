@@ -3,10 +3,10 @@ import { defineComponent } from "vue";
 import { useAuthUserStore } from "../stores/user";
 import { useChatsStore } from "../stores/chats";
 import ChatsList from "../components/chats/ChatsList.vue";
-import TextCard from "../components/TextCard.vue";
+import SelectChatView from "./SelectChatView.vue";
 
 export default defineComponent({
-  components: { TextCard, ChatsList },
+  components: { SelectChatView, ChatsList },
   setup() {
     const authUserStore = useAuthUserStore()
     const chatsStore = useChatsStore()
@@ -37,7 +37,7 @@ export default defineComponent({
       <ChatsList />
     </div>
     <div class="middle-column">
-      <TextCard :text="'Select chat'" />
+      <SelectChatView v-if="!chatsStore.$state.selectedChat" />
     </div>
   </div>
 </template>

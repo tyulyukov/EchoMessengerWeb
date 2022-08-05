@@ -1,13 +1,15 @@
 <template>
-  <main>
-    <h1>404</h1>
-    <h2>Error! Page not found</h2>
-    <a href="/">Home</a>
-  </main>
+  <div class="center">
+    <div class="not-found">
+      <h1>404</h1>
+      <h2>Error! Page not found</h2>
+      <a href="/">Home</a>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-main {
+.not-found {
   text-align: center;
 }
 

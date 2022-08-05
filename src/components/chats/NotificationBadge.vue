@@ -18,7 +18,10 @@ export default defineComponent({
   },
   computed: {
     notifications() {
-      return this.chat.unreadMessagesCount
+      if (this.chat.unreadMessagesCount < 1000)
+        return this.chat.unreadMessagesCount
+
+      return '999+'
     }
   },
   methods:{
@@ -34,16 +37,15 @@ export default defineComponent({
 
 <template>
   <div v-bind:class="getBadgeClass()">
-    <div class="center">
-      {{ notifications }}
-    </div>
+    <span>{{ notifications }}</span>
   </div>
 </template>
 
 <style scoped>
 .badge {
-  padding: 0px 15px;
+  text-align: center;
   border-radius: 43%;
+  width: 100%;
   background-color: red;
   transition: 300ms;
   color: var(--vt-c-white);
