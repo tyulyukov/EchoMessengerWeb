@@ -66,6 +66,13 @@ export default defineComponent({
   overflow: auto;
 }
 
+@media (min-width: 1876px){
+  .left-column {
+    width: 18vw;
+    max-width: 26vw;
+  }
+}
+
 @media (min-width: 1276px){
   .left-column {
     width: 25vw;

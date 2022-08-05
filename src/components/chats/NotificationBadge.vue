@@ -44,7 +44,7 @@ export default defineComponent({
 <style scoped>
 .badge {
   text-align: center;
-  border-radius: 43%;
+  border-radius: 62px;
   width: 100%;
   background-color: red;
   color: var(--vt-c-white);

@@ -200,8 +200,9 @@ export default defineComponent({
 }
 
 .messages-footer {
+  transform: translateY(-60px);
   width: 100%;
-  max-width: 45.5rem;
+  /*max-width: 45.5rem;*/
   position: relative;
   display: flex;
   align-items: flex-end;
