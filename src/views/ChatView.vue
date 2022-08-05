@@ -47,7 +47,7 @@ export default defineComponent({
       <div class="messages-wrapper">
         <div class="messages-list">
           <div class="messages">
-            <div class="message" v-for="i in 50">{{i}}</div>
+<!--            <div class="message" v-for="i in 50">{{i}}</div>-->
           </div>
         </div>
       </div>

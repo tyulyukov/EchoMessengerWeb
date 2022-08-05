@@ -2,7 +2,8 @@ import { defineStore } from 'pinia';
 
 export const useApiStore = defineStore('api', {
     state: () => ({
-        serverUrl: 'http://localhost:4224/',
+        /*serverUrl: 'http://localhost:4224/',*/
+        serverUrl: 'https://server-echo.herokuapp.com/',
         jwt: localStorage.getItem('jwt') || null
     }),
     getters: {
