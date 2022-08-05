@@ -61,7 +61,7 @@ export default defineComponent({
     <div v-else-if="chatsStore.$state.error" class="center">
       <img class="selectable"
            @click="chatsStore.loadChats"
-           src="src/assets/img/refresh.png"
+           src="/src/assets/img/refresh.png"
            style="width: 35px; height: 35px"/>
     </div>
     <ChatCard v-else-if="sortedChats && sortedChats.length > 0"
