@@ -2,18 +2,24 @@
 import { defineComponent } from "vue";
 import { useChatsStore } from "../../stores/chats";
 import ChatCard from "./ChatCard.vue";
+import { useAuthUserStore } from "../../stores/user";
 
 export default defineComponent({
   components: { ChatCard },
   setup() {
     const chatsStore = useChatsStore()
+    const authUserStore = useAuthUserStore()
 
     return {
-      chatsStore
+      chatsStore,
+      authUserStore
     }
   },
   computed: {
     sortedChats() {
+      if (!this.authUserStore.loggedIn)
+        return []
+
       let chats = this.chatsStore.$state.chats
 
       if (!chats || chats.length == 0)
@@ -44,7 +50,7 @@ export default defineComponent({
 <template>
   <div class="search-header">
     <form class="search-form">
-      <input :disabled="chatsStore.$state.loading" class="search" type="text" placeholder="   &#xF002;  Search" style="font-family:Arial, FontAwesome" />
+      <input :disabled="chatsStore.$state.loading || chatsStore.$state.error || chatsStore.$state.internalError" class="search" type="text" placeholder="   &#xF002;  Search" style="font-family:Arial, FontAwesome" />
     </form>
   </div>
 
@@ -52,13 +58,13 @@ export default defineComponent({
     <div v-if="chatsStore.$state.loading" class="center">
       <div class="spinner-border"></div>
     </div>
-    <div v-if="chatsStore.$state.error" class="center">
+    <div v-else-if="chatsStore.$state.error" class="center">
       <img class="selectable"
            @click="chatsStore.loadChats"
            src="src/assets/img/refresh.png"
            style="width: 35px; height: 35px"/>
     </div>
-    <ChatCard v-else-if="chatsStore.$state.chats"
+    <ChatCard v-else-if="sortedChats && sortedChats.length > 0"
               v-for="chat in sortedChats"
               :key="chat._id"
               :chat="chat" />

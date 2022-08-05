@@ -10,6 +10,21 @@ export const useChatsStore = defineStore('chats', {
         loading: false,
         internalError: null
     }),
+    getters: {
+        getTargetUser: () => {
+            return (chat) => {
+                if (!chat || !chat.sender || !chat.receiver)
+                    return undefined;
+
+                const authUserStore = useAuthUserStore()
+
+                if (chat.sender._id === authUserStore.id)
+                    return chat.receiver
+
+                return chat.sender
+            }
+        },
+    },
     actions: {
         loadChats() {
             if (this.chats)
@@ -58,8 +73,8 @@ export const useChatsStore = defineStore('chats', {
                     this.error = "No connection..."
                 })
         },
-        selectChat(id) {
-            this.selectedChat = id
+        selectChat(chat) {
+            this.selectedChat = chat
         }
     }
 })

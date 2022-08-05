@@ -1,6 +1,6 @@
 <script>
 import { defineComponent } from "vue";
-import {useChatsStore} from "../../stores/chats";
+import { useChatsStore } from "../../stores/chats";
 
 export default defineComponent({
   setup() {
@@ -26,7 +26,7 @@ export default defineComponent({
   },
   methods:{
     getBadgeClass() {
-      if (this.chatsStore.$state.selectedChat == this.chat._id)
+      if (this.chatsStore.$state.selectedChat && this.chatsStore.$state.selectedChat._id == this.chat._id)
         return "badge badge-active"
 
       return "badge"
@@ -47,7 +47,6 @@ export default defineComponent({
   border-radius: 43%;
   width: 100%;
   background-color: red;
-  transition: 300ms;
   color: var(--vt-c-white);
   transition: 300ms ease;
 }

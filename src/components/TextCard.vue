@@ -12,10 +12,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="center">
-    <div class="text-card">
-      <span>{{ text }}</span>
-    </div>
+  <div class="text-card">
+    <span>{{ text }}</span>
   </div>
 </template>
 

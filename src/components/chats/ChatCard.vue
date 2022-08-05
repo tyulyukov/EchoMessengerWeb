@@ -28,22 +28,19 @@ export default defineComponent({
     }
   },
   computed: {
-    targetUser() {
-      if (this.chat.sender._id === this.authUserStore.id)
-        return this.chat.receiver
-
-      return this.chat.sender
-    },
     lastMessage() {
       if (this.chat.messages && this.chat.messages.length >= 1)
         return this.chat.messages[0];
 
       return null;
+    },
+    targetUser() {
+      return this.chatsStore.getTargetUser(this.chat)
     }
   },
   methods:{
     getCardClass() {
-      if (this.chatsStore.$state.selectedChat == this.chat._id)
+      if (this.chatsStore.$state.selectedChat && this.chatsStore.$state.selectedChat._id == this.chat._id)
         return "card card-active"
 
       return "card"
@@ -53,7 +50,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div @click="chatsStore.selectChat(this.chat._id)" v-bind:class="getCardClass()">
+  <div @click="chatsStore.selectChat(this.chat)" v-bind:class="getCardClass()">
     <div class="avatar" v-bind:style="'background-image: url(' + apiStore.combineUrl(targetUser.avatarUrl) + ')'"></div>
 
     <div class="card-body">

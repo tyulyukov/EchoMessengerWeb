@@ -4,9 +4,10 @@ import { useAuthUserStore } from "../stores/user";
 import { useChatsStore } from "../stores/chats";
 import ChatsList from "../components/chats/ChatsList.vue";
 import SelectChatView from "./SelectChatView.vue";
+import ChatView from "./ChatView.vue";
 
 export default defineComponent({
-  components: { SelectChatView, ChatsList },
+  components: { SelectChatView, ChatsList, ChatView },
   setup() {
     const authUserStore = useAuthUserStore()
     const chatsStore = useChatsStore()
@@ -32,12 +33,15 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="columns">
+  <div v-if="authUserStore.loggedIn" class="columns">
     <div class="left-column">
       <ChatsList />
     </div>
     <div class="middle-column">
-      <SelectChatView v-if="!chatsStore.$state.selectedChat" />
+      <div class="middle-column-container">
+        <SelectChatView v-if="!chatsStore.$state.selectedChat" />
+        <ChatView v-else :chat="chatsStore.$state.selectedChat" />
+      </div>
     </div>
   </div>
 </template>
@@ -47,9 +51,8 @@ export default defineComponent({
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: 100%;
-  width: 100vw;
-  height: 100vh;
-  max-height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 
 .left-column {
@@ -98,8 +101,22 @@ export default defineComponent({
 }*/
 
 .middle-column {
-  border-left: 1px solid var(--color-border);
+  display: flex;
+  justify-content: center;
   height: 100%;
+  position: relative;
+  z-index: 1;
   min-width: 0;
+}
+
+.middle-column-container {
+  border-left: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 }
 </style>
