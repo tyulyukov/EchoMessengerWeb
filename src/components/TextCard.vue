@@ -22,7 +22,7 @@ export default defineComponent({
   padding: 0.25rem 3rem;
   background-color: var(--vt-c-main-vulkan);
   color: var(--color-text);
-  border-radius: 25px;
+  border-radius: 1.55rem;
   font-weight: lighter;
 }
 </style>

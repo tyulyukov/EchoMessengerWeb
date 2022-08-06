@@ -11,22 +11,26 @@ export default defineComponent({
     }
   },
   props: {
-    chat: {
-      type: Object,
+    chatId: {
+      type: String,
       required: true
     },
+    notificationsCount: {
+      type: Number,
+      required: true
+    }
   },
   computed: {
     notifications() {
-      if (this.chat.unreadMessagesCount < 1000)
-        return this.chat.unreadMessagesCount
+      if (this.notificationsCount < 1000)
+        return this.notificationsCount
 
       return '999+'
     }
   },
   methods:{
     getBadgeClass() {
-      if (this.chatsStore.$state.selectedChat && this.chatsStore.$state.selectedChat._id == this.chat._id)
+      if (this.chatsStore.$state.selectedChat && this.chatsStore.$state.selectedChat._id == this.chatId)
         return "badge badge-active"
 
       return "badge"
@@ -44,7 +48,7 @@ export default defineComponent({
 <style scoped>
 .badge {
   text-align: center;
-  border-radius: 62px;
+  border-radius: 3.875rem;
   width: 100%;
   background-color: red;
   color: var(--vt-c-white);

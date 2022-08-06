@@ -62,7 +62,7 @@ export default defineComponent({
       <img class="selectable"
            @click="chatsStore.loadChats"
            src="/src/assets/img/refresh.png"
-           style="width: 35px; height: 35px"/>
+           style="width: 2.125rem; height: 2.125rem"/>
     </div>
     <ChatCard v-else-if="sortedChats && sortedChats.length > 0"
               v-for="chat in sortedChats"
@@ -85,7 +85,7 @@ export default defineComponent({
 .search {
   width: 100%;
   height: 100%;
-  border-radius: 15px;
+  border-radius: 0.9375rem;
   display: block;
   background-color: var(--vt-c-secondary-steel-gray);
   color: var(--vt-c-white);
@@ -99,7 +99,6 @@ export default defineComponent({
 .search:focus {
   outline: none !important;
   border: none;
-  /*box-shadow: 0 0 5px #719ECE;*/
 }
 
 .chats-list {

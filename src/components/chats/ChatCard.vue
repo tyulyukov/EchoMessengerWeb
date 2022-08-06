@@ -6,9 +6,10 @@ import { useAuthUserStore } from "../../stores/user";
 import { formatDate } from "../../util/dateFormat";
 import CheckMarks from "./CheckMarks.vue";
 import NotificationBadge from "./NotificationBadge.vue";
+import OnlineStatus from "./OnlineStatus.vue";
 
 export default defineComponent({
-  components: { NotificationBadge, CheckMarks },
+  components: { NotificationBadge, CheckMarks, OnlineStatus },
   setup() {
     const chatsStore = useChatsStore()
     const apiStore = useApiStore()
@@ -51,7 +52,10 @@ export default defineComponent({
 
 <template>
   <div @click="chatsStore.selectChat(this.chat)" v-bind:class="getCardClass()">
-    <div class="avatar" v-bind:style="'background-image: url(' + apiStore.combineUrl(targetUser.avatarUrl) + ')'"></div>
+    <div class="avatar" v-bind:style="'background-image: url(' + apiStore.combineUrl(targetUser.avatarUrl) + ')'">
+      <OnlineStatus :chatId="this.chat._id"
+                    :isOnline="false" />
+    </div>
 
     <div class="card-body">
 
@@ -71,7 +75,8 @@ export default defineComponent({
         </div>
         <div class="additional-info">
           <NotificationBadge v-if="this.chat.unreadMessagesCount > 0"
-                             :chat="this.chat" />
+                             :chatId="this.chat._id"
+                             :notifications-count="this.chat.unreadMessagesCount" />
           <CheckMarks v-else-if="lastMessage.sender._id === this.authUserStore.id"
                       :haveSeen="lastMessage.haveSeen"/>
         </div>
@@ -82,10 +87,10 @@ export default defineComponent({
 
 <style scoped>
   .card {
-    border-radius: 20px;
+    border-radius: 1.25rem;
     background-color: var(--vt-c-main-vulkan);
     transition: 300ms ease;
-    padding: 15px;
+    padding: 0.95rem;
     display: flex;
     width: 100%;
     max-width: 100%;
@@ -94,15 +99,15 @@ export default defineComponent({
   }
 
   .card .avatar {
-    --avatar-diameter: 50px;
+    --avatar-diameter: 3.125rem;
     min-width: var(--avatar-diameter);
     min-height: var(--avatar-diameter);
     max-width: var(--avatar-diameter);
     max-height: var(--avatar-diameter);
     background-size: cover;
     border-radius: 50%;
-    border: 2px solid var(--vt-c-divider-dark-1);
-    margin-right: 10px;
+    border: 0.125rem solid var(--vt-c-divider-dark-1);
+    margin-right: 0.625rem;
     transition: 300ms ease;
   }
 
@@ -115,7 +120,7 @@ export default defineComponent({
   }
 
   .card-active .avatar {
-    border: 2px solid var(--vt-c-white);
+    border: 0.125rem solid var(--vt-c-white);
   }
 
   .card-body {

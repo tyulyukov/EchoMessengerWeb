@@ -42,25 +42,26 @@ export default defineComponent({
       </div>
     </div>
   </div>
+
   <div class="chat-row">
     <div class="messages-container">
       <div class="messages-wrapper">
         <div class="messages-list">
           <div class="messages">
-<!--            <div class="message" v-for="i in 50">{{i}}</div>-->
+            <div class="message" v-for="i in 50">{{ i }}</div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="messages-footer">
-      <div class="send-message-panel">
-        <div class="send-message-container">
-          <div class="send-message-input">
-            <img class="send-message-attachments-button selectable" src="../assets/img/attachment.png">
-            <div contenteditable="true" class="send-message-input-text"></div>
-            <img class="send-message-button selectable" src="../assets/img/send.png">
-          </div>
+  <div class="send-message-row">
+    <div class="send-message-panel">
+      <div class="send-message-container">
+        <div class="send-message-input">
+          <img class="send-message-attachments-button selectable" src="../assets/img/attachment.png">
+          <div contenteditable="true" class="send-message-input-text"></div>
+          <img class="send-message-button selectable" src="../assets/img/send.png">
         </div>
       </div>
     </div>
@@ -142,9 +143,6 @@ export default defineComponent({
 }
 
 .chat-row {
-  /*display: flex;
-  flex-direction: column;
-  align-items: center;*/
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -174,40 +172,40 @@ export default defineComponent({
   width: 100%;
   margin-bottom: 0.5rem;
   position: relative;
-  bottom: calc(0px - env(safe-area-inset-bottom));
+}
+
+/*noinspection CssInvalidPropertyValue*/
+@supports (overflow: overlay) {
+  .messages-list {
+    overflow-y: overlay;
+  }
 }
 
 .messages {
   width: 100%;
-  max-width: 45.5rem;
   min-height: 100%;
-  margin: 0 auto;
+  padding: 0.25rem 2rem;
   display: flex;
   justify-content: flex-end;
   flex-direction: column;
-  padding: 1rem 1rem 0 1.125rem;
 }
 
 .message {
-  padding: 5px;
+  padding: 0.25rem;
   background-color: var(--vt-c-blue);
   color: var(--vt-c-white);
-  margin: 5px;
-  border-radius: 20%;
+  margin: 0.25rem;
+  border-radius: 5rem;
   display: flex;
   align-items: flex-end;
   position: relative;
 }
 
-.messages-footer {
-  transform: translateY(-60px);
+.send-message-row {
   width: 100%;
-  /*max-width: 45.5rem;*/
   position: relative;
   display: flex;
   align-items: flex-end;
-  padding: 0 1rem env(safe-area-inset-bottom) 1rem;
-  top: env(safe-area-inset-bottom);
 }
 
 .send-message-panel {
@@ -217,11 +215,11 @@ export default defineComponent({
   position: relative;
   margin-bottom: 1.25rem;
   align-items: flex-end;
+  padding: 0 2rem;
 }
 
 .send-message-container {
   flex-grow: 1;
-  max-width: calc(100% - 4rem);
   box-shadow: 0 2px 2px var(--vt-c-black);
   background: var(--vt-c-secondary-steel-gray);
   border-radius: 0.75rem;
@@ -233,8 +231,9 @@ export default defineComponent({
 }
 
 .send-message-attachments-button, .send-message-button {
-  width: 30px;
-  height: 30px;
+  --size: 1.75rem;
+  width: var(--size);
+  height: var(--size);
 }
 
 .send-message-input-text {
@@ -244,12 +243,11 @@ export default defineComponent({
   color: var(--vt-c-white);
   border: none;
   font-weight: lighter;
-  /*font-size: 10.4pt;*/
   resize: none;
   text-align: left;
   overflow: auto;
   max-height: 6rem;
-  padding: 2px;
+  padding: 0.05rem;
 }
 
 .send-message-input-text:focus {

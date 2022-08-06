@@ -25,7 +25,7 @@ a,
 .logo {
   border-radius: 50%;
   background-color: var(--vt-c-blue-soft);
-  padding: 25px;
+  padding: 1.95rem;
 }
 
 .input-group {
@@ -36,7 +36,7 @@ a,
 .input-group label {
   /*transform: scale(0.75) translate(-0.5rem, -2.25rem);*/
   display: block;
-  margin-left: 10px;
+  margin-left: 0.45rem;
   width: 100%;
   text-align: left;
   font-weight: normal;
@@ -49,7 +49,7 @@ a,
   color: var(--vt-c-white);
   height: 2.5rem;
   width: 100%;
-  border: 1px solid var(--vt-c-text-dark-2);
+  border: 0.0625rem solid var(--vt-c-text-dark-2);
   border-radius: 0.75rem;
   font-weight: lighter;
   font-size: 13pt;
@@ -59,7 +59,7 @@ a,
 
 .form-control:focus {
   outline: none !important;
-  border: 1px solid var(--vt-c-white);
+  border: 0.0625rem solid var(--vt-c-white);
   /*box-shadow: 0 0 5px #719ECE;*/
 }
 
@@ -94,7 +94,6 @@ a,
   text-align: center;
   text-decoration: none;
   outline: 0;
-  border: 0;
 }
 
 .btn-primary {
@@ -115,12 +114,12 @@ a,
 .auth-form {
   display: block;
   text-align: center;
-  width: 17rem;
+  width: 18rem;
   margin: auto auto;
 }
 
-.auth-form img {
-  margin-bottom: 15px;
+.auth-form .logo {
+  margin-bottom: 0.9375rem;
 }
 
 .auth-form h1 {
@@ -131,7 +130,7 @@ a,
   position: relative;
   padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
-  border: 1px solid transparent;
+  border: 0.0625rem solid transparent;
   border-radius: 0.25rem;
 }
 

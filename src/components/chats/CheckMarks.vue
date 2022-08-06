@@ -32,7 +32,7 @@ export default defineComponent({
 .check-marks {
   display: flex;
   float: right;
-  padding: 0 5px;
+  padding: 0 0.3125rem;
 }
 
 .check-mark {
@@ -41,24 +41,25 @@ export default defineComponent({
 
 .check-mark .first-part, .second-part {
   background-color: var(--vt-c-white);
-  width: 2px;
+  width: 0.125rem;
+  border-radius: 0.65rem;
 }
 
 .check-mark .first-part-container {
-  margin: 5px 2px 0 5px;
+  margin: 0.3125rem 0.125rem 0 0.3125rem;
 }
 
 .check-mark .second-part-container {
-  margin: 0 2px 0 2px;
+  margin: 0 0.125rem 0 0.125rem;
 }
 
 .first-part {
-  height: 8px;
+  height: 0.5rem;
   transform: rotateZ(-45deg);
 }
 
 .second-part {
-  height: 13px;
+  height: 0.825rem;
   transform: rotateZ(45deg);
 }
 </style>

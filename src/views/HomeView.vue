@@ -66,21 +66,21 @@ export default defineComponent({
   overflow: auto;
 }
 
-@media (min-width: 1876px){
+@media (min-width: 1281px){
   .left-column {
-    width: 18vw;
-    max-width: 26vw;
+    width: 16vw;
+    max-width: 22vw;
   }
 }
 
-@media (min-width: 1276px){
+@media (min-width: 1025px) {
   .left-column {
     width: 25vw;
     max-width: 33vw;
   }
 }
 
-@media (min-width: 926px) {
+@media (min-width: 961px) {
   .left-column {
     max-width: 40vw;
   }
@@ -117,7 +117,7 @@ export default defineComponent({
 }
 
 .middle-column-container {
-  border-left: 1px solid var(--color-border);
+  border-left: 0.0625rem solid var(--color-border);
   display: flex;
   flex-direction: column;
   align-items: center;
