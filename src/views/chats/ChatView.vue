@@ -247,8 +247,9 @@ export default defineComponent({
   resize: none;
   text-align: left;
   overflow: auto;
+  word-break: break-word;
   max-height: 6rem;
-  padding: 0.05rem;
+  padding: 0 0.5rem;
 }
 
 .send-message-input-text:focus {

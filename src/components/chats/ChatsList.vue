@@ -1,9 +1,10 @@
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useChatsStore } from "../../stores/chats";
 import ChatCard from "./ChatCard.vue";
 import { useAuthUserStore } from "../../stores/user";
 import { useApiStore } from "../../stores/api";
+import {useSearchStore} from "../../stores/search";
 
 export default defineComponent({
   components: { ChatCard },
@@ -11,11 +12,40 @@ export default defineComponent({
     const chatsStore = useChatsStore()
     const authUserStore = useAuthUserStore()
     const apiStore = useApiStore()
+    const searchStore = useSearchStore()
+
+    let searchQuery = ref()
+    let lastSearchQuery = ''
+    let typingTimer;
+    const doneTypingInterval = 350;
+
+    let startTimer = function () {
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(() => {
+        if (lastSearchQuery !== searchQuery.value) {
+          if (searchQuery.value === '') {
+            searchStore.clearSearch()
+          }
+          else if (lastSearchQuery !== searchQuery.value) {
+            searchStore.search(searchQuery.value)
+            lastSearchQuery = searchQuery.value
+          }
+        }
+
+      }, doneTypingInterval);
+    }
+
+    let resetTimer = function () {
+      clearTimeout(typingTimer);
+    }
 
     return {
       chatsStore,
       authUserStore,
-      apiStore
+      apiStore,
+      startTimer,
+      resetTimer,
+      searchQuery
     }
   },
   computed: {
@@ -56,7 +86,7 @@ export default defineComponent({
       <div @click="$emit('openSettings')" class="settings-button selectable" v-bind:style="'background-image: url(' + apiStore.combineUrl(authUserStore.avatarUrl) + ')'"></div>
 
       <form class="search-form">
-        <input :disabled="chatsStore.$state.loading || chatsStore.$state.error || chatsStore.$state.internalError" class="search" type="text" placeholder="   &#xF002;  Search" style="font-family:Arial, FontAwesome" />
+        <input v-model="searchQuery" @keyup="startTimer" @keydown="resetTimer" :disabled="chatsStore.$state.loading || chatsStore.$state.error || chatsStore.$state.internalError" class="search" type="text" placeholder="&#xF002;  Search" style="font-family:Arial, FontAwesome" />
       </form>
     </div>
 
@@ -112,7 +142,8 @@ export default defineComponent({
   color: var(--vt-c-white);
   border: none;
   font-weight: lighter;
-  font-size: 13pt;
+  font-size: 12pt;
+  padding: 0 0.8rem;
   text-align: left;
   transition: border 0.2s;
 }
