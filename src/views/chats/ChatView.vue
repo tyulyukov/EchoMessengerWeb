@@ -106,6 +106,7 @@ export default defineComponent({
   height: var(--avatar-diameter) !important;
   margin-right: 0.625rem;
   background-size: cover;
+  background-position: center;
   border-radius: 50%;
   border: 2px solid var(--vt-c-divider-dark-1);
   transition: 300ms ease;

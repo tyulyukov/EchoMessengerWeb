@@ -51,10 +51,8 @@ export const useChatsStore = defineStore('chats', {
                         this.error = "Not authorized"
 
                         const authUserStore = useAuthUserStore()
+                        authUserStore.logOut()
 
-                        authUserStore.clearUser()
-                        apiStore.forgetJwt()
-                        this.$router.push('/auth')
                         return;
                     }
                     else if (res && res.status === 500) {

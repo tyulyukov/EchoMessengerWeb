@@ -25,6 +25,13 @@ export const useAuthUserStore = defineStore('auth/user', {
         clearUser () {
             this.$reset()
         },
+        logOut () {
+            const apiStore = useApiStore()
+
+            this.clearUser()
+            apiStore.forgetJwt()
+            this.$router.push('/auth')
+        },
         confirmJwt () {
             if (this.loggedIn)
                 return;
@@ -45,8 +52,7 @@ export const useAuthUserStore = defineStore('auth/user', {
                             return res.json()
                         }
                         else if (res && res.status === 401) {
-                            this.clearUser()
-                            apiStore.forgetJwt()
+                            this.logOut()
                         }
                     })
                     .then(data => {

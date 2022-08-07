@@ -57,8 +57,6 @@ export const useAuthRegisterStore = defineStore('auth/register', {
                 })
                 .then(data => {
                     if (data) {
-                        console.log("registered")
-
                         const authLoginStore = useAuthLoginStore()
 
                         authLoginStore.logIn(username, password)

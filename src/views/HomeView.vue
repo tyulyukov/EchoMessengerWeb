@@ -51,7 +51,10 @@ export default defineComponent({
 </script>
 
 <template>
-  <div v-if="authUserStore.loggedIn" class="columns">
+  <div v-if="!authUserStore.loggedIn" class="center">
+    <div class="spinner-border"></div>
+  </div>
+  <div v-else class="columns">
     <div class="left-column">
       <ChatsList v-if="this.openedTab == this.chatsTabName" @openSettings="openSettings" />
       <SettingsList v-else-if="this.openedTab == this.settingsTabName" @openChats="openChats" />

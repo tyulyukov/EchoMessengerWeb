@@ -106,6 +106,16 @@ a,
   background-color: #0c56d0;
 }
 
+.btn-danger {
+  color: #fff;
+  background-color: #f93154;
+}
+
+.btn-danger.focus, .btn-danger:focus, .btn-danger:hover {
+  color: #fff;
+  background-color: #bd1f3a;
+}
+
 .btn-submit {
   width: 60%;
   margin: 1.75rem 0;
