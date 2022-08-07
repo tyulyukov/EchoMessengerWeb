@@ -5,6 +5,9 @@ import { useAuthUserStore } from "./user";
 export const useSettingsProfileStore = defineStore('settings/profile', {
     state: () => ({
         error: null,
+        success: null,
+        passwordError: null,
+        passwordSuccess: null,
         loading: false,
         internalError: null
     }),
@@ -33,10 +36,8 @@ export const useSettingsProfileStore = defineStore('settings/profile', {
                         this.error = "Not authorized"
 
                         const authUserStore = useAuthUserStore()
+                        authUserStore.logOut()
 
-                        authUserStore.clearUser()
-                        apiStore.forgetJwt()
-                        this.$router.push('/auth')
                         return;
                     }
                     else if (res && res.status === 400) {
@@ -63,6 +64,8 @@ export const useSettingsProfileStore = defineStore('settings/profile', {
                         authUserStore.$patch({
                             username: username
                         })
+
+                        this.success = "Username is changed successfully"
                     }
                 })
                 .catch(err => {
@@ -153,6 +156,8 @@ export const useSettingsProfileStore = defineStore('settings/profile', {
                                         avatarUrl: res.avatarUrl,
                                         originalAvatarUrl: res.originalAvatarUrl
                                     })
+
+                                    this.success = "Avatar changed successfully"
                                 }
                             })
                             .catch(err => {
@@ -166,6 +171,68 @@ export const useSettingsProfileStore = defineStore('settings/profile', {
                     this.loading = false
                     this.internalError = err
                     this.error = "No connection..."
+                })
+        },
+        changePassword(oldPassword, newPassword) {
+            this.$reset()
+            const apiStore = useApiStore()
+
+            this.loading = true
+
+            if (oldPassword == newPassword) {
+                this.loading = false
+                this.passwordError = 'Passwords can not equal'
+            }
+
+            fetch(apiStore.combineUrl('profile/update/password'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': apiStore.jwt
+                },
+                body: JSON.stringify({newPassword, oldPassword})
+            })
+                .then(res => {
+                    this.loading = false
+
+                    if (res && res.status === 200) {
+                        return res.json()
+                    }
+                    else if (res && res.status === 401) {
+                        this.passwordError = "Not authorized"
+
+                        const authUserStore = useAuthUserStore()
+                        authUserStore.logOut()
+
+                        return;
+                    }
+                    else if (res && res.status === 400) {
+                        this.passwordError = "Passwords must be not empty"
+                        return;
+                    }
+                    else if (res && res.status === 403) {
+                        this.passwordError = "Password must contain at least 8 symbols. It must have letters and digits"
+                        return;
+                    }
+                    else if (res && res.status === 406) {
+                        this.passwordError = "Old password is incorrect"
+                    }
+                    else if (res && res.status === 500) {
+                        this.passwordError = "Server error"
+                        return;
+                    }
+                })
+                .then(data => {
+                    if (!this.passwordError) {
+                        const authUserStore = useAuthUserStore()
+
+                        this.passwordSuccess = "Password changed successfully"
+                    }
+                })
+                .catch(err => {
+                    this.loading = false
+                    this.internalError = err
+                    this.passwordError = "No connection..."
                 })
         }
     }

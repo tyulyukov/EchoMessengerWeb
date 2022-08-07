@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
 import { useApiStore } from "./api";
+import { useChatsStore } from "./chats";
+import { useSettingsProfileStore } from "./profile";
 
 export const useAuthUserStore = defineStore('auth/user', {
     state: () => ({
@@ -27,9 +29,14 @@ export const useAuthUserStore = defineStore('auth/user', {
         },
         logOut () {
             const apiStore = useApiStore()
+            const chatsStore = useChatsStore()
+            const settingsProfile = useSettingsProfileStore()
 
             this.clearUser()
             apiStore.forgetJwt()
+            chatsStore.$reset()
+            settingsProfile.$reset()
+
             this.$router.push('/auth')
         },
         confirmJwt () {

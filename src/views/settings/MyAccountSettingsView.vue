@@ -33,7 +33,7 @@ export default defineComponent({
       }
     },
     changePassword() {
-      console.log('from', this.oldPassword, 'to', this.newPassword)
+      this.settingsProfileStore.changePassword(this.oldPassword, this.newPassword)
     },
     logOut() {
       this.authUserStore.logOut()
@@ -70,7 +70,10 @@ export default defineComponent({
         </div>
         <div class="input-group">
           <div v-if="settingsProfileStore.$state.error" class="alert alert-danger">
-            <span>{{settingsProfileStore.$state.error}}</span>
+            <span>{{ settingsProfileStore.$state.error }}</span>
+          </div>
+          <div v-else-if="settingsProfileStore.$state.success" class="alert alert-success">
+            <span>{{ settingsProfileStore.$state.success }}</span>
           </div>
           <label>Username</label>
           <div class="submit-group">
@@ -83,9 +86,12 @@ export default defineComponent({
 
       <p>Password</p>
       <div class="password-info">
-<!--          <div v-if="error" class="alert alert-danger">
-            <span>{{ }}</span>
-          </div>-->
+        <div v-if="settingsProfileStore.$state.passwordError" class="alert alert-danger">
+          <span>{{ settingsProfileStore.$state.passwordError }}</span>
+        </div>
+        <div v-else-if="settingsProfileStore.$state.passwordSuccess" class="alert alert-success">
+          <span>{{ settingsProfileStore.$state.passwordSuccess }}</span>
+        </div>
 
         <div class="input-group">
           <label>Old password</label>
@@ -111,6 +117,7 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   padding: 2rem;
+  overflow-y: auto;
 }
 
 .settings-header-row {
@@ -136,7 +143,6 @@ export default defineComponent({
 
 .settings-row {
   width: 100%;
-  height: 100%;
   overflow: hidden;
   position: relative;
 }
