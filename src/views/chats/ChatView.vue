@@ -1,8 +1,8 @@
 <script>
 import { defineComponent } from "vue";
-import { useChatsStore } from "../stores/chats";
-import { useApiStore } from "../stores/api";
-import { formatDate } from "../util/dateFormat";
+import { useChatsStore } from "../../stores/chats";
+import { useApiStore } from "../../stores/api";
+import { formatDate } from "../../util/dateFormat";
 
 export default defineComponent({
   setup() {
@@ -59,9 +59,9 @@ export default defineComponent({
     <div class="send-message-panel">
       <div class="send-message-container">
         <div class="send-message-input">
-          <img class="send-message-attachments-button selectable" src="../assets/img/attachment.png">
+          <img class="send-message-attachments-button selectable" src="../../assets/img/attachment.png">
           <div contenteditable="true" class="send-message-input-text"></div>
-          <img class="send-message-button selectable" src="../assets/img/send.png">
+          <img class="send-message-button selectable" src="../../assets/img/send.png">
         </div>
       </div>
     </div>
@@ -97,14 +97,14 @@ export default defineComponent({
   overflow: hidden;
 }
 
-.avatar {
+.chat-info .avatar {
   --avatar-diameter: 2.5rem !important;
   min-width: var(--avatar-diameter);
   min-height: var(--avatar-diameter);
   max-width: var(--avatar-diameter);
   max-height: var(--avatar-diameter);
+  height: var(--avatar-diameter) !important;
   margin-right: 0.625rem;
-  height: 2.5rem !important;
   background-size: cover;
   border-radius: 50%;
   border: 2px solid var(--vt-c-divider-dark-1);

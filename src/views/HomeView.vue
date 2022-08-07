@@ -3,11 +3,14 @@ import { defineComponent } from "vue";
 import { useAuthUserStore } from "../stores/user";
 import { useChatsStore } from "../stores/chats";
 import ChatsList from "../components/chats/ChatsList.vue";
-import SelectChatView from "./SelectChatView.vue";
-import ChatView from "./ChatView.vue";
+import SelectChatView from "./chats/SelectChatView.vue";
+import ChatView from "./chats/ChatView.vue";
+import SettingsList from "../components/settings/SettingsList.vue";
+import MyAccountSettingsView from "./settings/MyAccountSettingsView.vue";
 
 export default defineComponent({
-  components: { SelectChatView, ChatsList, ChatView },
+  components: { MyAccountSettingsView, SettingsList, SelectChatView, ChatsList, ChatView },
+  emits: ['openChats', 'openSettings'],
   setup() {
     const authUserStore = useAuthUserStore()
     const chatsStore = useChatsStore()
@@ -17,12 +20,27 @@ export default defineComponent({
       chatsStore
     }
   },
+  data() {
+    return {
+      openedTab: 'chats',
+    }
+  },
+  computed: {
+    chatsTabName() { return 'chats' },
+    settingsTabName() { return 'settings' },
+  },
   methods: {
     confirmJwt() {
       this.authUserStore.confirmJwt()
     },
     loadChats() {
       this.chatsStore.loadChats()
+    },
+    openSettings() {
+      this.openedTab = this.settingsTabName
+    },
+    openChats() {
+      this.openedTab = this.chatsTabName
     }
   },
   mounted() {
@@ -35,12 +53,14 @@ export default defineComponent({
 <template>
   <div v-if="authUserStore.loggedIn" class="columns">
     <div class="left-column">
-      <ChatsList />
+      <ChatsList v-if="this.openedTab == this.chatsTabName" @openSettings="openSettings" />
+      <SettingsList v-else-if="this.openedTab == this.settingsTabName" @openChats="openChats" />
     </div>
     <div class="middle-column">
       <div class="middle-column-container">
-        <SelectChatView v-if="!chatsStore.$state.selectedChat" />
-        <ChatView v-else :chat="chatsStore.$state.selectedChat" />
+        <SelectChatView v-if="this.openedTab == this.chatsTabName && !chatsStore.$state.selectedChat" />
+        <ChatView v-else-if="this.openedTab == this.chatsTabName" :chat="chatsStore.$state.selectedChat" />
+        <MyAccountSettingsView v-else-if="this.openedTab == this.settingsTabName" />
       </div>
     </div>
   </div>
@@ -62,7 +82,7 @@ export default defineComponent({
   height: 100vh;
   max-height: 100vh;
   background-color: var(--vt-c-main-vulkan);
-  padding: 1rem 2rem;
+  padding: 1rem;
   overflow: auto;
 }
 

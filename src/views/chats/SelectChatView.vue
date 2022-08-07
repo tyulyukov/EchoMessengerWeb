@@ -1,6 +1,6 @@
 <script>
 import { defineComponent } from "vue";
-import TextCard from "../components/TextCard.vue";
+import TextCard from "../../components/TextCard.vue";
 
 export default defineComponent({
   components: { TextCard }

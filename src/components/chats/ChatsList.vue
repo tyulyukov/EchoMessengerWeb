@@ -3,16 +3,19 @@ import { defineComponent } from "vue";
 import { useChatsStore } from "../../stores/chats";
 import ChatCard from "./ChatCard.vue";
 import { useAuthUserStore } from "../../stores/user";
+import { useApiStore } from "../../stores/api";
 
 export default defineComponent({
   components: { ChatCard },
   setup() {
     const chatsStore = useChatsStore()
     const authUserStore = useAuthUserStore()
+    const apiStore = useApiStore()
 
     return {
       chatsStore,
-      authUserStore
+      authUserStore,
+      apiStore
     }
   },
   computed: {
@@ -48,38 +51,55 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="search-header">
-    <form class="search-form">
-      <input :disabled="chatsStore.$state.loading || chatsStore.$state.error || chatsStore.$state.internalError" class="search" type="text" placeholder="   &#xF002;  Search" style="font-family:Arial, FontAwesome" />
-    </form>
-  </div>
+  <div>
+    <div class="search-header">
+      <div @click="$emit('openSettings')" class="settings-button selectable" v-bind:style="'background-image: url(' + apiStore.combineUrl(authUserStore.avatarUrl) + ')'"></div>
 
-  <div class="chats-list">
-    <div v-if="chatsStore.$state.loading" class="center">
-      <div class="spinner-border"></div>
+      <form class="search-form">
+        <input :disabled="chatsStore.$state.loading || chatsStore.$state.error || chatsStore.$state.internalError" class="search" type="text" placeholder="   &#xF002;  Search" style="font-family:Arial, FontAwesome" />
+      </form>
     </div>
-    <div v-else-if="chatsStore.$state.error" class="center">
-      <img class="selectable"
-           @click="chatsStore.loadChats"
-           src="/src/assets/img/refresh.png"
-           style="width: 2.125rem; height: 2.125rem"/>
+
+    <div class="chats-list">
+      <div v-if="chatsStore.$state.loading" class="center">
+        <div class="spinner-border"></div>
+      </div>
+      <div v-else-if="chatsStore.$state.error" class="center">
+        <img class="selectable"
+             @click="chatsStore.loadChats"
+             src="/src/assets/img/refresh.png"
+             style="width: 2.125rem; height: 2.125rem"/>
+      </div>
+      <ChatCard v-else-if="sortedChats && sortedChats.length > 0"
+                v-for="chat in sortedChats"
+                :key="chat._id"
+                :chat="chat" />
     </div>
-    <ChatCard v-else-if="sortedChats && sortedChats.length > 0"
-              v-for="chat in sortedChats"
-              :key="chat._id"
-              :chat="chat" />
   </div>
 </template>
 
 <style>
 .search-header {
   padding-bottom: 2rem;
-  height: 4.5rem;
+  display: flex;
+}
+
+.search-header .settings-button {
+  --avatar-diameter: 2.25rem !important;
+  min-width: var(--avatar-diameter);
+  min-height: var(--avatar-diameter);
+  max-width: var(--avatar-diameter);
+  max-height: var(--avatar-diameter);
+  background-size: cover;
+  border-radius: 50%;
+  border: 1px solid var(--vt-c-divider-dark-1);
+  transition: 300ms ease;
+  cursor: pointer;
+  margin-right: 0.55rem;
 }
 
 .search-form {
   width: 100%;
-  height: 100%;
 }
 
 .search {

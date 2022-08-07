@@ -31,7 +31,7 @@ export default defineComponent({
       <h1>Welcome Back!</h1>
       <p class="note">Login to your account</p>
 
-      <div v-if="authLoginStore.$state.error" class="alert alert-dark">{{authLoginStore.$state.error}}</div>
+      <div v-if="authLoginStore.$state.error" class="alert alert-danger">{{authLoginStore.$state.error}}</div>
 
       <form>
         <div class="input-group">

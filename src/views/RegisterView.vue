@@ -32,7 +32,7 @@ export default defineComponent({
       <h1>Get Started!</h1>
       <p class="note">Register your account</p>
 
-      <div v-if="authRegisterStore.$state.error" class="alert alert-dark">{{authRegisterStore.$state.error}}</div>
+      <div v-if="authRegisterStore.$state.error" class="alert alert-danger">{{authRegisterStore.$state.error}}</div>
 
       <form>
         <div class="input-group">
