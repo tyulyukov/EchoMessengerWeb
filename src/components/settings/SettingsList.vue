@@ -13,7 +13,7 @@ export default defineComponent({
     <div class="settings-header">
       <img @click="$emit('openChats')"
            class="button-go-back"
-           src="/src/assets/img/arrow%20down.png"
+           src="../../assets/img/arrow%20down.png"
            alt="Back to chats">
     </div>
 
