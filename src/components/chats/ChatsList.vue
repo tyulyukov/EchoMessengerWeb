@@ -2,12 +2,14 @@
 import { defineComponent, ref } from "vue";
 import { useChatsStore } from "../../stores/chats";
 import ChatCard from "./ChatCard.vue";
+import SearchedUserCard from "../search/SearchedUserCard.vue";
 import { useAuthUserStore } from "../../stores/user";
 import { useApiStore } from "../../stores/api";
-import {useSearchStore} from "../../stores/search";
+import { useSearchStore } from "../../stores/search";
+import { isNullOrWhiteSpace } from "../../util/validation";
 
 export default defineComponent({
-  components: { ChatCard },
+  components: { ChatCard, SearchedUserCard },
   setup() {
     const chatsStore = useChatsStore()
     const authUserStore = useAuthUserStore()
@@ -23,10 +25,7 @@ export default defineComponent({
       clearTimeout(typingTimer);
       typingTimer = setTimeout(() => {
         if (lastSearchQuery !== searchQuery.value) {
-          if (searchQuery.value === '') {
-            searchStore.clearSearch()
-          }
-          else if (lastSearchQuery !== searchQuery.value) {
+          if (searchQuery.value !== '' && lastSearchQuery !== searchQuery.value) {
             searchStore.search(searchQuery.value)
             lastSearchQuery = searchQuery.value
           }
@@ -43,9 +42,11 @@ export default defineComponent({
       chatsStore,
       authUserStore,
       apiStore,
+      searchStore,
       startTimer,
       resetTimer,
-      searchQuery
+      searchQuery,
+      isNullOrWhiteSpace
     }
   },
   computed: {
@@ -90,7 +91,7 @@ export default defineComponent({
       </form>
     </div>
 
-    <div class="chats-list">
+    <div v-if="searchQuery == null || searchQuery.trim() === ''" class="chats-list">
       <div v-if="chatsStore.$state.loading" class="center">
         <div class="spinner-border"></div>
       </div>
@@ -104,6 +105,16 @@ export default defineComponent({
                 v-for="chat in sortedChats"
                 :key="chat._id"
                 :chat="chat" />
+    </div>
+    <div v-else class="search-list">
+      <div v-if="searchStore.$state.loading" class="center">
+        <div class="spinner-border"></div>
+      </div>
+      <div v-else-if="searchStore.$state.users">
+        <SearchedUserCard v-for="user in searchStore.$state.users"
+                          :key="user._id"
+                          :user="user" />
+      </div>
     </div>
   </div>
 </template>
@@ -153,7 +164,7 @@ export default defineComponent({
   border: none;
 }
 
-.chats-list {
+.chats-list, .search-list {
   padding-bottom: 2rem;
   overflow: auto;
   width: 100%;
