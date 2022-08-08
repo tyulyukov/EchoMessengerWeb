@@ -15,8 +15,7 @@ body {
   font-weight: normal;
 }
 
-a,
-.blue {
+a, .blue {
   text-decoration: none;
   color: var(--vt-c-blue);
   transition: 0.4s;

@@ -55,7 +55,7 @@ export default defineComponent({
       <div v-else class="spinner-border" style="margin: 1.75rem 0;"></div>
       <br>
 
-      <a href="/auth">Already registered</a>
+      <RouterLink class="blue" to="/auth">Already registered</RouterLink>
     </div>
   </div>
 </template>
