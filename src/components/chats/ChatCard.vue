@@ -52,7 +52,7 @@ export default defineComponent({
 
 <template>
   <div @click="chatsStore.selectChat(this.chat)" v-bind:class="getCardClass()">
-    <div class="avatar" v-bind:style="'background-image: url(' + apiStore.combineUrl(targetUser.avatarUrl) + ')'">
+    <div class="avatar" v-bind:style="'background-image: url(' + targetUser.avatarUrl + ')'">
       <OnlineStatus :chatId="this.chat._id"
                     :isOnline="false" />
     </div>

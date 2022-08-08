@@ -30,7 +30,7 @@ export default defineComponent({
 
 <template>
   <div @click="createChat" class="search-card">
-    <div class="avatar" v-bind:style="'background-image: url(' + apiStore.combineUrl(user.avatarUrl) + ')'"></div>
+    <div class="avatar" v-bind:style="'background-image: url(' + user.avatarUrl + ')'"></div>
 
     <div class="username">{{ user.username }}</div>
   </div>

@@ -33,7 +33,7 @@ export default defineComponent({
   <div class="chat-info-row">
     <div class="chat-info-container">
       <div class="chat-info">
-        <div class="avatar" v-bind:style="'background-image: url(' + apiStore.combineUrl(targetUser.avatarUrl) + ')'"></div>
+        <div class="avatar" v-bind:style="'background-image: url(' + targetUser.avatarUrl + ')'"></div>
 
         <div class="info">
           <span class="username">{{ targetUser.username }}</span>

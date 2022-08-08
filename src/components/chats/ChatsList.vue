@@ -88,7 +88,7 @@ export default defineComponent({
 <template>
   <div>
     <div class="search-header">
-      <div @click="$emit('openSettings')" class="settings-button selectable" v-bind:style="'background-image: url(' + apiStore.combineUrl(authUserStore.avatarUrl) + ')'"></div>
+      <div @click="$emit('openSettings')" class="settings-button selectable" v-bind:style="'background-image: url(' + authUserStore.avatarUrl + ')'"></div>
 
       <form class="search-form">
         <input v-model="searchQuery" @keyup="startTimer" @keydown="resetTimer" :disabled="chatsStore.$state.loading || chatsStore.$state.error || chatsStore.$state.internalError" class="search" type="text" placeholder="&#xF002;  Search" style="font-family:Arial, FontAwesome" />

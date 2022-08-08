@@ -53,7 +53,7 @@ export default defineComponent({
     <div class="settings-row">
       <p>Profile</p>
       <div class="profile-info">
-        <div class="avatar" v-bind:style="'background-image: url(' + apiStore.combineUrl(authUserStore.avatarUrl) + ')'">
+        <div class="avatar" v-bind:style="'background-image: url(' + authUserStore.avatarUrl + ')'">
           <div v-if="!settingsProfileStore.$state.loading">
             <label for="avatar-input">
               <div class="avatar-overlay">
