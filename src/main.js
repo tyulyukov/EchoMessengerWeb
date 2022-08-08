@@ -12,8 +12,8 @@ const pinia = createPinia()
 router.beforeEach((to, from, next) => {
     const authUserStore = useApiStore()
 
-    if (!authUserStore.jwt && to.path !== '/auth' && to.path !== '/register') next('/auth')
-    else if (authUserStore.jwt && (to.path === '/auth' || to.path === '/register')) next(from.path)
+    if (!authUserStore.jwt && to.path !== '/auth' && to.path !== '/signup') next('/auth')
+    else if (authUserStore.jwt && (to.path === '/auth' || to.path === '/signup')) next(from.path)
     else next()
 })
 

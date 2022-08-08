@@ -1,13 +1,16 @@
 <script>
 import { defineComponent } from "vue";
-import {useApiStore} from "../../stores/api";
+import { useApiStore } from "../../stores/api";
+import { useChatsStore } from "../../stores/chats";
 
 export default defineComponent({
   setup() {
     const apiStore = useApiStore()
+    const chatsStore = useChatsStore()
 
     return {
-      apiStore
+      apiStore,
+      chatsStore
     }
   },
   props: {
@@ -15,12 +18,18 @@ export default defineComponent({
       type: Object,
       required: true
     }
+  },
+  methods: {
+    createChat() {
+      this.$emit('closeSearch')
+      this.chatsStore.createChat(this.user._id)
+    }
   }
 })
 </script>
 
 <template>
-  <div class="search-card">
+  <div @click="createChat" class="search-card">
     <div class="avatar" v-bind:style="'background-image: url(' + apiStore.combineUrl(user.avatarUrl) + ')'"></div>
 
     <div class="username">{{ user.username }}</div>

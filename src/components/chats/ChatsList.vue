@@ -6,10 +6,10 @@ import SearchedUserCard from "../search/SearchedUserCard.vue";
 import { useAuthUserStore } from "../../stores/user";
 import { useApiStore } from "../../stores/api";
 import { useSearchStore } from "../../stores/search";
-import { isNullOrWhiteSpace } from "../../util/validation";
 
 export default defineComponent({
   components: { ChatCard, SearchedUserCard },
+  emits: ['closeSearch'],
   setup() {
     const chatsStore = useChatsStore()
     const authUserStore = useAuthUserStore()
@@ -46,7 +46,6 @@ export default defineComponent({
       startTimer,
       resetTimer,
       searchQuery,
-      isNullOrWhiteSpace
     }
   },
   computed: {
@@ -76,6 +75,11 @@ export default defineComponent({
       })
 
       return chats
+    }
+  },
+  methods: {
+    closeSearch() {
+      this.searchQuery = ''
     }
   }
 })
@@ -113,7 +117,8 @@ export default defineComponent({
       <div v-else-if="searchStore.$state.users">
         <SearchedUserCard v-for="user in searchStore.$state.users"
                           :key="user._id"
-                          :user="user" />
+                          :user="user"
+                          @closeSearch="closeSearch" />
       </div>
     </div>
   </div>

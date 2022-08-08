@@ -49,7 +49,7 @@ export default defineComponent({
       <div v-else class="spinner-border" style="margin: 1.75rem 0;"></div>
       <br>
 
-      <a href="/register">Create an account</a>
+      <a href="/signup">Create an account</a>
     </div>
   </div>
 </template>
