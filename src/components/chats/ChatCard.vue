@@ -105,6 +105,7 @@ export default defineComponent({
     max-width: var(--avatar-diameter);
     max-height: var(--avatar-diameter);
     background-size: cover;
+    background-position: center;
     border-radius: 50%;
     border: 0.125rem solid var(--vt-c-divider-dark-1);
     margin-right: 0.625rem;
