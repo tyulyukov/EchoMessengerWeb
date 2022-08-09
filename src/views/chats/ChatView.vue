@@ -27,6 +27,12 @@ export default defineComponent({
     targetUser() {
       return this.chatsStore.getTargetUser(this.chat)
     },
+  },
+  methods: {
+    scrollChanged(event) {
+      if (event.target.offsetTop )
+      console.log(event)
+    }
   }
 })
 </script>
@@ -49,7 +55,7 @@ export default defineComponent({
     <div class="messages-container">
       <div class="messages-wrapper">
         <div class="messages-list">
-          <div class="messages">
+          <div @wheel="scrollChanged" class="messages">
             <MessageCard v-for="message in chat.messages"
                          :key="message._id"
                          :message="message" />
