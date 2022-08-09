@@ -29,7 +29,7 @@ export default defineComponent({
       else
         classList += 'offline-status-icon'
 
-      if (this.chatsStore.$state.selectedChat && this.chatsStore.$state.selectedChat._id == this.chatId)
+      if (this.chatsStore.$state.selectedChatId && this.chatsStore.$state.selectedChatId == this.chatId)
         classList += ' status-active'
 
       return classList

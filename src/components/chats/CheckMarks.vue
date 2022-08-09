@@ -4,7 +4,8 @@ import { defineComponent } from "vue";
 export default defineComponent({
   props: {
     haveSeen: {
-      type: Boolean
+      type: Boolean,
+      required: true
     }
   }
 })

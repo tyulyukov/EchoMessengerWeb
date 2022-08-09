@@ -3,8 +3,10 @@ import { defineComponent } from "vue";
 import { useChatsStore } from "../../stores/chats";
 import { useApiStore } from "../../stores/api";
 import { formatDate } from "../../util/dateFormat";
+import MessageCard from "../../components/chats/MessageCard.vue";
 
 export default defineComponent({
+  components: { MessageCard },
   setup() {
     const chatsStore = useChatsStore()
     const apiStore = useApiStore()
@@ -24,7 +26,7 @@ export default defineComponent({
   computed: {
     targetUser() {
       return this.chatsStore.getTargetUser(this.chat)
-    }
+    },
   }
 })
 </script>
@@ -48,7 +50,9 @@ export default defineComponent({
       <div class="messages-wrapper">
         <div class="messages-list">
           <div class="messages">
-            <div class="message" v-for="i in 50">{{ i }}</div>
+            <MessageCard v-for="message in chat.messages"
+                         :key="message._id"
+                         :message="message" />
           </div>
         </div>
       </div>
@@ -189,17 +193,6 @@ export default defineComponent({
   display: flex;
   justify-content: flex-end;
   flex-direction: column;
-}
-
-.message {
-  padding: 0.25rem;
-  background-color: var(--vt-c-blue);
-  color: var(--vt-c-white);
-  margin: 0.25rem;
-  border-radius: 5rem;
-  display: flex;
-  align-items: flex-end;
-  position: relative;
 }
 
 .send-message-row {

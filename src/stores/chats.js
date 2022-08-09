@@ -5,7 +5,7 @@ import { useAuthUserStore } from "./user";
 export const useChatsStore = defineStore('chats', {
     state: () => ({
         chats: null,
-        selectedChat: null,
+        selectedChatId: null,
         error: null,
         loading: false,
         internalError: null
@@ -24,6 +24,18 @@ export const useChatsStore = defineStore('chats', {
                 return chat.sender
             }
         },
+        getChatById: (state) => {
+            return (id) => {
+                if (!id || !state.chats || state.chats.length == 0)
+                    return undefined
+
+                for (const chat of state.chats)
+                    if (chat._id == id)
+                        return chat
+
+                return undefined
+            }
+        }
     },
     actions: {
         loadChats() {
@@ -69,7 +81,7 @@ export const useChatsStore = defineStore('chats', {
                 })
         },
         selectChat(chat) {
-            this.selectedChat = chat
+            this.selectedChatId = chat._id
         },
         createChat(receiverId) {
             const apiStore = useApiStore()
@@ -114,7 +126,7 @@ export const useChatsStore = defineStore('chats', {
                             console.log('added new')
                         }
 
-                        this.selectedChat = data
+                        this.selectedChatId = data._id
                     }
                 })
                 .catch(err => {

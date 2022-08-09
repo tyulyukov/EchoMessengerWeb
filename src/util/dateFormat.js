@@ -10,6 +10,11 @@ export function formatDate(date) {
         return `${convert2digits(dateTime.getMonth() + 1)}.${dateTime.getFullYear()}`
 }
 
+export function formatTime(date) {
+    const dateTime = new Date(date)
+    return `${convert2digits(dateTime.getHours())}:${convert2digits(dateTime.getMinutes())}`
+}
+
 export function convert2digits(number) {
     if (number < 10)
         return `0${number}`

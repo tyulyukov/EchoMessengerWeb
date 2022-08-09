@@ -41,7 +41,7 @@ export default defineComponent({
   },
   methods:{
     getCardClass() {
-      if (this.chatsStore.$state.selectedChat && this.chatsStore.$state.selectedChat._id == this.chat._id)
+      if (this.chatsStore.$state.selectedChatId && this.chatsStore.$state.selectedChatId == this.chat._id)
         return "card card-active"
 
       return "card"

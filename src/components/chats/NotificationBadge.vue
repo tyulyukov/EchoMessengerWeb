@@ -30,7 +30,7 @@ export default defineComponent({
   },
   methods:{
     getBadgeClass() {
-      if (this.chatsStore.$state.selectedChat && this.chatsStore.$state.selectedChat._id == this.chatId)
+      if (this.chatsStore.$state.selectedChatId && this.chatsStore.$state.selectedChatId == this.chatId)
         return "badge badge-active"
 
       return "badge"
