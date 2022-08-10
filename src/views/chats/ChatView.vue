@@ -1,10 +1,13 @@
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useChatsStore } from "../../stores/chats";
 import { useApiStore } from "../../stores/api";
+import { useAuthUserStore } from "../../stores/user";
+import { useOnlineStore } from "../../stores/online";
 import { formatDate } from "../../util/dateFormat";
 import MessageCard from "../../components/chats/MessageCard.vue";
-import {useOnlineStore} from "../../stores/online";
+import { v4 as uuidv4 } from 'uuid';
+import { isNullOrWhiteSpace } from "../../util/validation";
 
 export default defineComponent({
   components: { MessageCard },
@@ -12,16 +15,22 @@ export default defineComponent({
     const chatsStore = useChatsStore()
     const apiStore = useApiStore()
     const onlineStore = useOnlineStore()
+    const authUserStore = useAuthUserStore()
 
     return {
       chatsStore,
       apiStore,
       onlineStore,
+      authUserStore,
       formatDate
     }
   },
   props: {
     chat: {
+      type: Object,
+      required: true
+    },
+    socket: {
       type: Object,
       required: true
     }
@@ -58,9 +67,35 @@ export default defineComponent({
     /*handleInputDraftMessage(event) {
       this.chat.draftMessage = event.target.innerText
       console.log(event.target.innerText)
-    }*/
+    },*/
+    sendMessage() {
+      const content = document.getElementById('message-input').innerText.trim()
+
+      if (isNullOrWhiteSpace(content))
+        return
+
+      const messageId = uuidv4()
+
+      this.socket.emit('send message', messageId, this.chat._id, content)
+
+      const message = {
+        _id: messageId,
+        content: content,
+        sent: false,
+        haveSeen: false,
+        sentAt: new Date(),
+        editedAt: new Date(),
+        edits: [],
+        sender: {
+          _id: this.authUserStore.id
+        }
+      }
+
+      this.chat.messages.push(message)
+    },
   },
   mounted() {
+
     if (!this.chat.viewLoaded) {
       this.chat.viewLoaded = true
 
@@ -141,8 +176,8 @@ export default defineComponent({
       <div class="send-message-container">
         <div class="send-message-input">
           <img class="send-message-attachments-button selectable" src="../../assets/img/attachment.png">
-          <div contenteditable="true" class="send-message-input-text"></div>
-          <img class="send-message-button selectable" src="../../assets/img/send.png">
+          <div id="message-input" contenteditable="true" class="send-message-input-text"></div>
+          <img @click="sendMessage" class="send-message-button selectable" src="../../assets/img/send.png">
         </div>
       </div>
     </div>

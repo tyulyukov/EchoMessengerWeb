@@ -72,7 +72,10 @@ export default defineComponent({
         </div>
       </div>
 
-      <div v-if="lastMessage" class="meta-info">
+      <div v-if="lastMessage && lastMessage.sent == false" class="meta-info">
+        <div class="spinner-border"></div>
+      </div>
+      <div v-else-if="lastMessage" class="meta-info">
         <div class="time-info">
           <span>{{ formatDate(lastMessage.sentAt) }}</span>
         </div>
@@ -158,5 +161,10 @@ export default defineComponent({
     justify-content: right;
   }
 
-
+  .meta-info .spinner-border {
+    --diameter: 1rem;
+    width: var(--diameter);
+    height: var(--diameter);
+    margin-top: 0.35rem;
+  }
 </style>

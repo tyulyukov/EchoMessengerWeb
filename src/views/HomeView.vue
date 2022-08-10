@@ -73,6 +73,27 @@ export default defineComponent({
       chatsStore.addChat(chat)
     })
 
+    this.socket.on('message sent', function (message) {
+      if (!chatsStore.chats)
+        return
+
+      for (let i = 0; i < chatsStore.chats.length; i++) {
+        if (chatsStore.chats[i]._id === message.chat._id || chatsStore.chats[i]._id === message.chat) {
+          let messageIndex = chatsStore.chats[i].messages.findIndex(e => e._id === message._id)
+
+          if (messageIndex == -1)
+            chatsStore.chats[i].messages.push(message)
+          else
+            chatsStore.chats[i].messages[messageIndex].sent = true
+
+        }
+      }
+    })
+
+    // TODO on send message failed add attribute to a message 'sendFailed'
+
+
+
     this.socket.connect();
 
     this.confirmJwt()
@@ -98,6 +119,7 @@ export default defineComponent({
       <div class="middle-column-container">
         <SelectChatView v-if="this.openedTab == this.chatsTabName && !chatsStore.$state.selectedChatId" />
         <ChatView v-else-if="this.openedTab == this.chatsTabName"
+                  :socket="this.socket"
                   :chat="chatsStore.getChatById(chatsStore.$state.selectedChatId)" />
         <MyAccountSettingsView v-else-if="this.openedTab == this.settingsTabName" />
       </div>

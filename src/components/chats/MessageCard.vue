@@ -40,9 +40,11 @@ export default defineComponent({
   <div v-bind:class="getMessageCardClass()">
     <div class="message-content">
       <div class="message-content-inner">
-        <p>
+        <span>
           {{ message.content }}
-          <span class="message-meta">
+          <div v-if="message.sent === false" class="spinner-border"></div>
+          <span v-else-if="message.sendFailed === true" class="error">error</span>
+          <span v-else class="message-meta">
             <span v-if="message.edits && message.edits.length > 0" class="message-edited">
               edited
             </span>
@@ -50,7 +52,8 @@ export default defineComponent({
             <CheckMarks v-if="message.sender._id == authUserStore.id"
                         :have-seen="message.haveSeen" />
           </span>
-        </p>
+
+        </span>
       </div>
     </div>
   </div>
@@ -94,6 +97,12 @@ export default defineComponent({
   font-weight: 400;
 }
 
+.message-content-inner .spinner-border {
+  --diameter: 0.75rem;
+  width: var(--diameter);
+  height: var(--diameter);
+}
+
 .message-meta {
   color: var(--vt-c-text-dark-2);
   position: relative;
@@ -113,5 +122,13 @@ export default defineComponent({
 .message-meta .check-marks {
   margin-top: 0.15rem;
   margin-left: -0.5rem;
+}
+
+.own .error {
+  padding: 0 0.3rem;
+  border-radius: 5rem;
+  background-color: red;
+  display: inherit;
+  color: white;
 }
 </style>
