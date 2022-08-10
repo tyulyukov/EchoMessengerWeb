@@ -202,8 +202,8 @@ export const useChatsStore = defineStore('chats', {
                 })
         },
         addChat(chat) {
-            if (!this.chats.some(e => e._id === data._id)) {
-                this.chats.push(data)
+            if (!this.chats.some(e => e._id === chat._id)) {
+                this.chats.push(chat)
             }
         }
     }
