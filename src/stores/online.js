@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import {useChatsStore} from "./chats";
 
 export const useOnlineStore = defineStore('online', {
     state: () => ({
@@ -35,6 +36,14 @@ export const useOnlineStore = defineStore('online', {
                 this.onlineUsers.push(userId)
         },
         userDisconnected(userId) {
+            const chatsStore = useChatsStore()
+            for (let i = 0; i < chatsStore.chats.length; i++) {
+                if (chatsStore.chats[i].receiver._id === userId)
+                    chatsStore.chats[i].receiver.lastOnlineAt = Date.now()
+                else if (chatsStore.chats[i].sender._id === userId)
+                    chatsStore.chats[i].sender.lastOnlineAt = Date.now()
+            }
+
             for(let i = 0; i < this.onlineUsers.length; i++)
                 if (this.onlineUsers[i] === userId)
                     this.onlineUsers.splice(i, 1);
