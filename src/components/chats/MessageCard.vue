@@ -43,7 +43,10 @@ export default defineComponent({
         <p>
           {{ message.content }}
           <span class="message-meta">
-            {{ formatTime(message.sentAt) }}
+            <span v-if="message.edits && message.edits.length > 0" class="message-edited">
+              edited
+            </span>
+            <span>{{ formatTime(message.sentAt) }}</span>
             <CheckMarks v-if="message.sender._id == authUserStore.id"
                         :have-seen="message.haveSeen" />
           </span>
@@ -83,7 +86,6 @@ export default defineComponent({
 .message-content p {
   margin: 0;
   word-break: break-word;
-  white-space: pre-wrap;
   line-height: 1.3125;
   text-align: initial;
   display: flow-root;
@@ -100,8 +102,12 @@ export default defineComponent({
   line-height: 1.35;
   height: 1rem;
   margin-left: 0.4375rem;
-  margin-right: -0.35rem;
+  margin-right: -0.4rem;
   font-size: 11pt;
+}
+
+.message-meta span {
+  margin-right: 0.1rem;
 }
 
 .message-meta .check-marks {

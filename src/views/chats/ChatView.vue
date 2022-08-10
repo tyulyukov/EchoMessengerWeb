@@ -30,8 +30,55 @@ export default defineComponent({
   },
   methods: {
     scrollChanged(event) {
-      if (event.target.offsetTop )
-      console.log(event)
+      if (event.target.scrollTop === 0 && !this.chat.allMessagesLoaded) {
+        let lastMessage = this.chat.messages[0]
+        let lastMessageContainer = undefined
+
+        if (lastMessage)
+          lastMessageContainer = document.getElementById('message-' + lastMessage._id)
+
+        this.loadMessages(function () {
+          if (lastMessageContainer)
+            lastMessageContainer.scrollIntoView()
+        })
+      }
+    },
+    loadMessages(callback) {
+      this.chatsStore.loadMessages(this.chat, callback)
+    }
+  },
+  mounted() {
+    if (!this.chat.viewLoaded) {
+      this.chat.viewLoaded = true
+
+      let lastMessage = this.chat.messages[0]
+      let lastMessageContainer = undefined
+
+      if (lastMessage)
+        lastMessageContainer = document.getElementById('message-' + lastMessage._id)
+
+      let anchor = document.getElementById('bottom-anchor')
+
+      this.loadMessages(function () {
+        setTimeout(function() { anchor.scrollIntoView() }, 1);
+      })
+    }
+  },
+  updated() {
+    if (!this.chat.viewLoaded) {
+      this.chat.viewLoaded = true
+
+      let lastMessage = this.chat.messages[0]
+      let lastMessageContainer = undefined
+
+      if (lastMessage)
+        lastMessageContainer = document.getElementById('message-' + lastMessage._id)
+
+      let anchor = document.getElementById('bottom-anchor')
+
+      this.loadMessages(function () {
+        setTimeout(function() { anchor.scrollIntoView() }, 1);
+      })
     }
   }
 })
@@ -54,11 +101,21 @@ export default defineComponent({
   <div class="chat-row">
     <div class="messages-container">
       <div class="messages-wrapper">
-        <div class="messages-list">
-          <div @wheel="scrollChanged" class="messages">
+        <div @scroll="scrollChanged" class="messages-list">
+          <div id="messages">
+            <!--put here date card from creating chat-->
+            <div v-if="chat.allMessagesLoaded" class="messages-chat-info">
+              <div class="avatar" v-bind:style="'background-image: url(' + targetUser.avatarUrl + ')'"></div>
+
+              <div class="username">{{ targetUser.username }}</div>
+              <p class="note">This is the beginning of your direct messages with this user.</p>
+            </div>
+
             <MessageCard v-for="message in chat.messages"
+                         v-bind:id="'message-' + message._id"
                          :key="message._id"
                          :message="message" />
+            <div id="bottom-anchor"></div>
           </div>
         </div>
       </div>
@@ -74,6 +131,12 @@ export default defineComponent({
           <img class="send-message-button selectable" src="../../assets/img/send.png">
         </div>
       </div>
+    </div>
+  </div>
+
+  <div v-if="this.chat.loadingMessages" class="loading-background">
+    <div class="center">
+      <div class="spinner-border"></div>
     </div>
   </div>
 </template>
@@ -122,6 +185,19 @@ export default defineComponent({
   transition: 300ms ease;
 }
 
+.messages-chat-info .avatar {
+  --avatar-diameter: 8rem;
+  min-width: var(--avatar-diameter);
+  min-height: var(--avatar-diameter);
+  max-width: var(--avatar-diameter);
+  max-height: var(--avatar-diameter);
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  border: 0.125rem solid var(--vt-c-divider-dark-1);
+  transition: 300ms ease;
+}
+
 .username {
   font-size: 1.125rem;
   line-height: 1.375rem;
@@ -129,6 +205,11 @@ export default defineComponent({
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.messages-chat-info .username {
+  font-size: 2rem;
+  line-height: 2.1rem;
 }
 
 .online-status, .offline-status {
@@ -192,10 +273,10 @@ export default defineComponent({
   }
 }
 
-.messages {
+#messages {
   width: 100%;
   min-height: 100%;
-  padding: 0.25rem 2rem;
+  padding: 0.5rem 2rem;
   display: flex;
   justify-content: flex-end;
   flex-direction: column;
@@ -254,5 +335,14 @@ export default defineComponent({
 .send-message-input-text:focus {
   outline: none !important;
   border: none;
+}
+
+.loading-background {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  z-index: 999;
 }
 </style>

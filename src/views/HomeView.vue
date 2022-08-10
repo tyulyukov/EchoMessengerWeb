@@ -62,7 +62,8 @@ export default defineComponent({
     <div class="middle-column">
       <div class="middle-column-container">
         <SelectChatView v-if="this.openedTab == this.chatsTabName && !chatsStore.$state.selectedChatId" />
-        <ChatView v-else-if="this.openedTab == this.chatsTabName" :chat="chatsStore.getChatById(chatsStore.$state.selectedChatId)" />
+        <ChatView v-else-if="this.openedTab == this.chatsTabName"
+                  :chat="chatsStore.getChatById(chatsStore.$state.selectedChatId)" />
         <MyAccountSettingsView v-else-if="this.openedTab == this.settingsTabName" />
       </div>
     </div>

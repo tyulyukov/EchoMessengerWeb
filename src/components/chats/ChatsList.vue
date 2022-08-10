@@ -62,12 +62,12 @@ export default defineComponent({
         let aLastSentAt, bLastSentAt;
 
         if (a.messages && a.messages.length > 0)
-          aLastSentAt = new Date(a.messages[0].sentAt)
+          aLastSentAt = new Date(a.messages[a.messages.length - 1].sentAt)
         else
           aLastSentAt = new Date(a.createdAt)
 
         if (b.messages && b.messages.length > 0)
-          bLastSentAt = new Date(b.messages[0].sentAt)
+          bLastSentAt = new Date(b.messages[b.messages.length - 1].sentAt)
         else
           bLastSentAt = new Date(b.createdAt)
 

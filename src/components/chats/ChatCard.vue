@@ -31,7 +31,7 @@ export default defineComponent({
   computed: {
     lastMessage() {
       if (this.chat.messages && this.chat.messages.length >= 1)
-        return this.chat.messages[0];
+        return this.chat.messages[this.chat.messages.length - 1];
 
       return null;
     },
