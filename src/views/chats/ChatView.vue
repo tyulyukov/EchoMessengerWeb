@@ -4,16 +4,19 @@ import { useChatsStore } from "../../stores/chats";
 import { useApiStore } from "../../stores/api";
 import { formatDate } from "../../util/dateFormat";
 import MessageCard from "../../components/chats/MessageCard.vue";
+import {useOnlineStore} from "../../stores/online";
 
 export default defineComponent({
   components: { MessageCard },
   setup() {
     const chatsStore = useChatsStore()
     const apiStore = useApiStore()
+    const onlineStore = useOnlineStore()
 
     return {
       chatsStore,
       apiStore,
+      onlineStore,
       formatDate
     }
   },
@@ -27,9 +30,15 @@ export default defineComponent({
     targetUser() {
       return this.chatsStore.getTargetUser(this.chat)
     },
+    getStatusClass() {
+      return this.onlineStore.isUserOnline(this.targetUser._id) ? "online-status" : "offline-status"
+    }
   },
   methods: {
     scrollChanged(event) {
+      let messagesContainer = document.getElementById('messages-list')
+      this.chat.scrollBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop
+
       if (event.target.scrollTop === 0 && !this.chat.allMessagesLoaded) {
         let lastMessage = this.chat.messages[0]
         let lastMessageContainer = undefined
@@ -45,7 +54,11 @@ export default defineComponent({
     },
     loadMessages(callback) {
       this.chatsStore.loadMessages(this.chat, callback)
-    }
+    },
+    /*handleInputDraftMessage(event) {
+      this.chat.draftMessage = event.target.innerText
+      console.log(event.target.innerText)
+    }*/
   },
   mounted() {
     if (!this.chat.viewLoaded) {
@@ -54,18 +67,27 @@ export default defineComponent({
       let anchor = document.getElementById('bottom-anchor')
 
       this.loadMessages(function () {
+        anchor.scrollIntoView()
         setTimeout(function() { anchor.scrollIntoView() }, 1);
+        setTimeout(function() { anchor.scrollIntoView() }, 10);
       })
     }
   },
   updated() {
+    if (this.chat.scrollBottom) {
+      let messagesContainer = document.getElementById('messages-list')
+      messagesContainer.scrollTop = messagesContainer.scrollHeight - this.chat.scrollBottom
+    }
+
     if (!this.chat.viewLoaded) {
       this.chat.viewLoaded = true
 
       let anchor = document.getElementById('bottom-anchor')
 
       this.loadMessages(function () {
+        anchor.scrollIntoView()
         setTimeout(function() { anchor.scrollIntoView() }, 1);
+        setTimeout(function() { anchor.scrollIntoView() }, 10);
       })
     }
   }
@@ -80,7 +102,11 @@ export default defineComponent({
 
         <div class="info">
           <span class="username">{{ targetUser.username }}</span>
-          <span class="offline-status"><span class="status-icon">•</span> last online {{ this.formatDate(targetUser.lastOnlineAt) }}</span>
+          <span v-bind:class="getStatusClass">
+            <span class="status-icon">• </span>
+            <span v-if="onlineStore.isUserOnline(this.targetUser._id)">online</span>
+            <span v-else>last online {{ this.formatDate(targetUser.lastOnlineAt) }}</span>
+          </span>
         </div>
       </div>
     </div>
@@ -89,7 +115,7 @@ export default defineComponent({
   <div class="chat-row">
     <div class="messages-container">
       <div class="messages-wrapper">
-        <div @scroll="scrollChanged" class="messages-list">
+        <div @scroll="scrollChanged" id="messages-list" class="messages-list">
           <div id="messages">
             <!--put here date card from creating chat-->
             <div v-if="chat.allMessagesLoaded" class="messages-chat-info">
@@ -316,6 +342,7 @@ export default defineComponent({
   text-align: left;
   overflow: auto;
   word-break: break-word;
+  white-space: pre-wrap;
   max-height: 6rem;
   padding: 0 0.5rem;
 }

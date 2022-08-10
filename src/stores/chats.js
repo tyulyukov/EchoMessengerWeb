@@ -87,7 +87,7 @@ export const useChatsStore = defineStore('chats', {
             const apiStore = useApiStore()
             let chatIndex = -1
 
-            if (!this.chats || this.chats.length == 0 || chat.allMessagesLoaded)
+            if (!this.chats || this.chats.length == 0 || chat.allMessagesLoaded || chat.loadingMessages)
                 return;
 
             for (let i = 0; i < this.chats.length; i++) {

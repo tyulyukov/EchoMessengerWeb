@@ -7,6 +7,7 @@ import { formatDate } from "../../util/dateFormat";
 import CheckMarks from "./CheckMarks.vue";
 import NotificationBadge from "./NotificationBadge.vue";
 import OnlineStatus from "./OnlineStatus.vue";
+import {useOnlineStore} from "../../stores/online";
 
 export default defineComponent({
   components: { NotificationBadge, CheckMarks, OnlineStatus },
@@ -14,11 +15,13 @@ export default defineComponent({
     const chatsStore = useChatsStore()
     const apiStore = useApiStore()
     const authUserStore = useAuthUserStore()
+    const onlineStore = useOnlineStore()
 
     return {
       chatsStore,
       apiStore,
       authUserStore,
+      onlineStore,
       formatDate
     }
   },
@@ -54,7 +57,7 @@ export default defineComponent({
   <div @click="chatsStore.selectChat(this.chat)" v-bind:class="getCardClass()">
     <div class="avatar" v-bind:style="'background-image: url(' + targetUser.avatarUrl + ')'">
       <OnlineStatus :chatId="this.chat._id"
-                    :isOnline="false" />
+                    :isOnline="onlineStore.isUserOnline(targetUser._id)" />
     </div>
 
     <div class="card-body">

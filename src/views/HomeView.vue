@@ -2,22 +2,32 @@
 import { defineComponent } from "vue";
 import { useAuthUserStore } from "../stores/user";
 import { useChatsStore } from "../stores/chats";
+import { useApiStore } from "../stores/api";
+import { useOnlineStore } from "../stores/online";
 import ChatsList from "../components/chats/ChatsList.vue";
 import SelectChatView from "./chats/SelectChatView.vue";
 import ChatView from "./chats/ChatView.vue";
 import SettingsList from "../components/settings/SettingsList.vue";
 import MyAccountSettingsView from "./settings/MyAccountSettingsView.vue";
+import createSocket from "../util/socket";
 
 export default defineComponent({
   components: { MyAccountSettingsView, SettingsList, SelectChatView, ChatsList, ChatView },
   emits: ['openChats', 'openSettings'],
   setup() {
+    const apiStore = useApiStore()
     const authUserStore = useAuthUserStore()
     const chatsStore = useChatsStore()
+    const onlineStore = useOnlineStore()
+
+    const socket = createSocket(apiStore.serverUrl, apiStore.jwt)
 
     return {
       authUserStore,
-      chatsStore
+      chatsStore,
+      onlineStore,
+      apiStore,
+      socket
     }
   },
   data() {
@@ -44,8 +54,28 @@ export default defineComponent({
     }
   },
   mounted() {
+    const onlineStore = useOnlineStore()
+
+    this.socket.on('users online', function (users) {
+      onlineStore.usersConnected(users)
+    })
+
+    this.socket.on('user connected', function (user) {
+      onlineStore.userConnected(user)
+    })
+
+    this.socket.on('user disconnected', function (user) {
+      onlineStore.userDisconnected(user)
+    })
+
+    this.socket.connect();
+
     this.confirmJwt()
     this.loadChats()
+  },
+  unmounted() {
+    this.socket.disconnect()
+    console.log('disconnected')
   }
 })
 </script>
