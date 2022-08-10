@@ -51,12 +51,6 @@ export default defineComponent({
     if (!this.chat.viewLoaded) {
       this.chat.viewLoaded = true
 
-      let lastMessage = this.chat.messages[0]
-      let lastMessageContainer = undefined
-
-      if (lastMessage)
-        lastMessageContainer = document.getElementById('message-' + lastMessage._id)
-
       let anchor = document.getElementById('bottom-anchor')
 
       this.loadMessages(function () {
@@ -67,12 +61,6 @@ export default defineComponent({
   updated() {
     if (!this.chat.viewLoaded) {
       this.chat.viewLoaded = true
-
-      let lastMessage = this.chat.messages[0]
-      let lastMessageContainer = undefined
-
-      if (lastMessage)
-        lastMessageContainer = document.getElementById('message-' + lastMessage._id)
 
       let anchor = document.getElementById('bottom-anchor')
 
