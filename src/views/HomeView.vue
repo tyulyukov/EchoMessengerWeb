@@ -55,6 +55,7 @@ export default defineComponent({
   },
   mounted() {
     const onlineStore = useOnlineStore()
+    const chatsStore = useChatsStore()
 
     this.socket.on('users online', function (users) {
       onlineStore.usersConnected(users)
@@ -66,6 +67,10 @@ export default defineComponent({
 
     this.socket.on('user disconnected', function (user) {
       onlineStore.userDisconnected(user)
+    })
+
+    this.socket.on('chat created', function (chat) {
+      chatsStore.addChat(chat)
     })
 
     this.socket.connect();

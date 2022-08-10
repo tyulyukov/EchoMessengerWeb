@@ -190,10 +190,7 @@ export const useChatsStore = defineStore('chats', {
                 })
                 .then(data => {
                     if (data && data._id) {
-                        if (!this.chats.some(e => e._id === data._id)) {
-                            this.chats.push(data)
-                            console.log('added new')
-                        }
+                        this.addChat(data)
 
                         this.selectedChatId = data._id
                     }
@@ -203,6 +200,11 @@ export const useChatsStore = defineStore('chats', {
                     this.internalError = err
                     this.error = "No connection..."
                 })
+        },
+        addChat(chat) {
+            if (!this.chats.some(e => e._id === data._id)) {
+                this.chats.push(data)
+            }
         }
     }
 })
