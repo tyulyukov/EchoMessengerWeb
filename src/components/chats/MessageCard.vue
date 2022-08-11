@@ -61,6 +61,13 @@ export default defineComponent({
   <div v-bind:id="'message-' + message._id" v-bind:class="getMessageCardClass()">
     <div class="message-content">
       <div class="message-content-inner">
+        <div class="replied-on-message" v-if="message.repliedOn">
+          <div class="message-text">
+            <p>{{ message.repliedOn.content }}</p>
+            <div class="replied-on-username">{{ message.repliedOn.sender.username }}</div>
+          </div>
+        </div>
+
         <span>
           {{ message.content }}
           <div v-if="message.sent === false" class="spinner-border"></div>
@@ -124,6 +131,56 @@ export default defineComponent({
   --diameter: 0.75rem;
   width: var(--diameter);
   height: var(--diameter);
+}
+
+.replied-on-message {
+  display: grid;
+  align-items: center;
+  font-size: 0.85rem;
+  line-height: 1rem;
+  margin: 0 -0.25rem 0.0625rem;
+  padding: 0.1875rem 0.25rem 0.1875rem 0.4375rem;
+  position: relative;
+  cursor: pointer;
+  color: var(--vt-c-active-wild-watermelon);
+}
+
+.replied-on-message::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0.3125rem;
+  bottom: 0.3125rem;
+  left: 0.3125rem;
+  width: 2px;
+  background: var(--vt-c-active-wild-watermelon);
+  border-radius: 1rem;
+}
+
+.replied-on-message .message-text {
+  overflow: hidden;
+  margin-inline-start: 0.5rem;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.replied-on-message .message-text p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 1.125rem;
+  margin-bottom: 0;
+  flex: 1;
+  color: var(--vt-c-white);
+}
+
+.replied-on-message .message-text .replied-on-username {
+  margin-bottom: 0.1rem;
+  flex: 1;
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .message-meta {
