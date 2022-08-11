@@ -9,9 +9,10 @@ import MessageCard from "../../components/chats/MessageCard.vue";
 import DateCard from "../../components/DateCard.vue";
 import { v4 as uuidv4 } from 'uuid';
 import { isNullOrWhiteSpace } from "../../util/validation";
+import UserTypingIndicator from "../../components/chats/UserTypingIndicator.vue";
 
 export default defineComponent({
-  components: { MessageCard, DateCard },
+  components: { UserTypingIndicator, MessageCard, DateCard },
   setup() {
     const chatsStore = useChatsStore()
     const apiStore = useApiStore()
@@ -69,6 +70,11 @@ export default defineComponent({
       this.chat.draftMessage = event.target.value
     },
     handleKeyUp(event) {
+      if (!this.chat.lastTypingAt || this.chat.lastTypingAt.getTime() + 3000 < new Date().getTime() ) {
+        this.chat.lastTypingAt = new Date()
+        this.socket.emit('user typing', this.targetUser._id)
+      }
+
       if (event.keyCode == 13)
         this.sendMessage()
     },
@@ -142,9 +148,15 @@ export default defineComponent({
         <div class="info">
           <span class="username">{{ targetUser.username }}</span>
           <span v-bind:class="getStatusClass">
-            <span class="status-icon">• </span>
-            <span v-if="onlineStore.isUserOnline(this.targetUser._id)">online</span>
-            <span v-else>last online {{ this.formatDate(targetUser.lastOnlineAt) }}</span>
+            <span v-if="chat.userTyping">
+              <UserTypingIndicator />
+              typing
+            </span>
+            <span v-else>
+              <span class="status-icon">• </span>
+              <span v-if="onlineStore.isUserOnline(this.targetUser._id)">online</span>
+              <span v-else>last online {{ this.formatDate(targetUser.lastOnlineAt) }}</span>
+            </span>
           </span>
         </div>
       </div>

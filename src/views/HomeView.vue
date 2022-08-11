@@ -86,6 +86,8 @@ export default defineComponent({
             chatsStore.chats[i].messages.push(message)
           else
             chatsStore.chats[i].messages[messageIndex] = message
+
+          break
         }
       }
     })
@@ -102,6 +104,8 @@ export default defineComponent({
 
           if (messageIndex >= 0)
             chatsStore.chats[i].messages[messageIndex] = message
+
+          break
         }
       }
     })
@@ -116,6 +120,8 @@ export default defineComponent({
 
           if (messageIndex >= 0)
             chatsStore.chats[i].messages.splice(messageIndex, 1)
+
+          break
         }
       }
     })
@@ -130,6 +136,26 @@ export default defineComponent({
 
           if (messageIndex >= 0)
             chatsStore.chats[i].messages[messageIndex].haveSeen = true
+
+          break
+        }
+      }
+    })
+
+    let typingTimer;
+
+    this.socket.on('user typing', function(targetUserId) {
+      if (!chatsStore.chats)
+        return
+
+      for (let i = 0; i < chatsStore.chats.length; i++) {
+        if (chatsStore.chats[i].receiver._id === targetUserId || chatsStore.chats[i].sender._id === targetUserId) {
+          chatsStore.chats[i].userTyping = true;
+          clearTimeout(typingTimer);
+          typingTimer = setTimeout(() => {
+            chatsStore.chats[i].userTyping = false;
+          }, 3100);
+          break
         }
       }
     })

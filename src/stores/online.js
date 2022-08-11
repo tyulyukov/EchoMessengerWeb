@@ -37,6 +37,9 @@ export const useOnlineStore = defineStore('online', {
         },
         userDisconnected(userId) {
             const chatsStore = useChatsStore()
+            if (!chatsStore.chats || chatsStore.chats.length == 0)
+                return
+
             for (let i = 0; i < chatsStore.chats.length; i++) {
                 if (chatsStore.chats[i].receiver._id === userId)
                     chatsStore.chats[i].receiver.lastOnlineAt = Date.now()

@@ -8,9 +8,10 @@ import CheckMarks from "./CheckMarks.vue";
 import NotificationBadge from "./NotificationBadge.vue";
 import OnlineStatus from "./OnlineStatus.vue";
 import {useOnlineStore} from "../../stores/online";
+import UserTypingIndicator from "./UserTypingIndicator.vue";
 
 export default defineComponent({
-  components: { NotificationBadge, CheckMarks, OnlineStatus },
+  components: {UserTypingIndicator, NotificationBadge, CheckMarks, OnlineStatus },
   setup() {
     const chatsStore = useChatsStore()
     const apiStore = useApiStore()
@@ -67,7 +68,11 @@ export default defineComponent({
           <p>{{ targetUser.username }}</p>
         </div>
         <div class="last-activity">
-          <p v-if="lastMessage">{{ lastMessage.content }}<span class="muted" v-if="lastMessage.edits.length > 0"> edited</span></p>
+          <span class="user-typing" v-if="chat.userTyping">
+            <UserTypingIndicator />
+            typing
+          </span>
+          <p v-else-if="lastMessage">{{ lastMessage.content }}<span class="muted" v-if="lastMessage.edits.length > 0"> edited</span></p>
           <p class="muted" v-else>Start the conversation</p>
         </div>
       </div>
@@ -166,5 +171,13 @@ export default defineComponent({
     width: var(--diameter);
     height: var(--diameter);
     margin-top: 0.35rem;
+  }
+
+  .user-typing {
+    color: var(--vt-c-active-wild-watermelon);
+  }
+
+  .user-typing .typing-indicator {
+    display: inline-flex;
   }
 </style>
