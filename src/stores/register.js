@@ -39,7 +39,7 @@ export const useAuthRegisterStore = defineStore('auth/register', {
                         return
                     }
                     else if (res && res.status === 403) {
-                        this.error = "Password must contain at least 8 symbols. It must have letters and digits"
+                        this.error = "Password must contain at least 8 symbols. It must have at least 1 capital letter and 1 digit"
                         return;
                     }
                     else if (res && res.status === 406) {

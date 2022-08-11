@@ -211,7 +211,7 @@ export const useSettingsProfileStore = defineStore('settings/profile', {
                         return;
                     }
                     else if (res && res.status === 403) {
-                        this.passwordError = "Password must contain at least 8 symbols. It must have letters and digits"
+                        this.passwordError = "Password must contain at least 8 symbols. It must have at least 1 capital letter and 1 digit"
                         return;
                     }
                     else if (res && res.status === 406) {
