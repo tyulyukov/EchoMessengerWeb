@@ -172,7 +172,6 @@ export default defineComponent({
   },
   unmounted() {
     this.socket.disconnect()
-    console.log('disconnected')
   }
 })
 </script>

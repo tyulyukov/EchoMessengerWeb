@@ -9,7 +9,7 @@ function createSocket(url, jwt) {
     });
 
     socket.onAny((event, ...args) => {
-        console.log(event, args); // debug only
+        // console.log(event, args); // debug only
     });
 
     return socket
