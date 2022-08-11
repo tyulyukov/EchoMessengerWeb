@@ -170,6 +170,9 @@ export default defineComponent({
       messagesContainer.scrollTop = messagesContainer.scrollHeight - this.chat.scrollBottom
     }
 
+    if (!this.chat.loadingMessages)
+      this.readMessages()
+
     if (!this.chat.viewLoaded) {
       this.chat.viewLoaded = true
       let chatId = this.chat._id
