@@ -1,12 +1,13 @@
 <script>
 import { defineComponent } from "vue";
 import { useAuthUserStore } from "../../stores/user";
-import { formatTime } from "../../util/dateFormat";
+import { formatTime, isSameDate } from "../../util/dateFormat";
 import CheckMarks from "./CheckMarks.vue";
+import DateCard from "../DateCard.vue";
 import { useChatsStore } from "../../stores/chats";
 
 export default defineComponent({
-  components: { CheckMarks },
+  components: { CheckMarks, DateCard },
   setup() {
     const authUserStore = useAuthUserStore()
     const chatsStore = useChatsStore()
@@ -14,13 +15,30 @@ export default defineComponent({
     return {
       authUserStore,
       chatsStore,
-      formatTime
+      formatTime,
+      isSameDate
     }
   },
   props: {
     message: {
       type: Object,
       required: true
+    },
+    chat: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    prevMessage() {
+      let messageIndex = this.chat.messages.findIndex(e => e._id === this.message._id)
+
+      if (messageIndex > 0) {
+        return this.chat.messages[messageIndex - 1]
+      }
+      else {
+        return undefined
+      }
     }
   },
   methods: {
@@ -37,6 +55,9 @@ export default defineComponent({
 </script>
 
 <template>
+  <DateCard v-if="!prevMessage || !isSameDate(prevMessage.sentAt, message.sentAt)"
+            :date="new Date(message.sentAt)" />
+
   <div v-bind:class="getMessageCardClass()">
     <div class="message-content">
       <div class="message-content-inner">
@@ -73,6 +94,8 @@ export default defineComponent({
   border-radius: 1.25rem;
   display: flex;
   align-items: flex-end;
+  word-break: break-word;
+  white-space: pre-line;
   position: relative;
   padding: 0.45rem 0.7rem 0.4rem;
   background-color: #1C1D26;

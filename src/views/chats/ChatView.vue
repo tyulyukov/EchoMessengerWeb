@@ -6,11 +6,12 @@ import { useAuthUserStore } from "../../stores/user";
 import { useOnlineStore } from "../../stores/online";
 import { formatDate } from "../../util/dateFormat";
 import MessageCard from "../../components/chats/MessageCard.vue";
+import DateCard from "../../components/DateCard.vue";
 import { v4 as uuidv4 } from 'uuid';
 import { isNullOrWhiteSpace } from "../../util/validation";
 
 export default defineComponent({
-  components: { MessageCard },
+  components: { MessageCard, DateCard },
   setup() {
     const chatsStore = useChatsStore()
     const apiStore = useApiStore()
@@ -64,12 +65,16 @@ export default defineComponent({
     loadMessages(callback) {
       this.chatsStore.loadMessages(this.chat, callback)
     },
-    /*handleInputDraftMessage(event) {
-      this.chat.draftMessage = event.target.innerText
-      console.log(event.target.innerText)
-    },*/
+    handleInputDraftMessage(event) {
+      this.chat.draftMessage = event.target.value
+    },
+    handleKeyUp(event) {
+      if (event.keyCode == 13)
+        this.sendMessage()
+    },
     sendMessage() {
-      const content = document.getElementById('message-input').innerText.trim()
+      const content = this.chat.draftMessage.trim()
+      this.chat.draftMessage = ''
 
       if (isNullOrWhiteSpace(content))
         return
@@ -95,7 +100,6 @@ export default defineComponent({
     },
   },
   mounted() {
-
     if (!this.chat.viewLoaded) {
       this.chat.viewLoaded = true
 
@@ -152,7 +156,7 @@ export default defineComponent({
       <div class="messages-wrapper">
         <div @scroll="scrollChanged" id="messages-list" class="messages-list">
           <div id="messages">
-            <!--put here date card from creating chat-->
+            <DateCard v-if="chat.allMessagesLoaded" :date="new Date(chat.createdAt)" />
             <div v-if="chat.allMessagesLoaded" class="messages-chat-info">
               <div class="avatar" v-bind:style="'background-image: url(' + targetUser.avatarUrl + ')'"></div>
 
@@ -163,6 +167,7 @@ export default defineComponent({
             <MessageCard v-for="message in chat.messages"
                          v-bind:id="'message-' + message._id"
                          :key="message._id"
+                         :chat="chat"
                          :message="message" />
             <div id="bottom-anchor"></div>
           </div>
@@ -176,7 +181,7 @@ export default defineComponent({
       <div class="send-message-container">
         <div class="send-message-input">
           <img class="send-message-attachments-button selectable" src="../../assets/img/attachment.png">
-          <div id="message-input" contenteditable="true" class="send-message-input-text"></div>
+          <input @keyup="handleKeyUp" @input="handleInputDraftMessage" v-bind:value="this.chat.draftMessage" type="text" class="send-message-input-text" />
           <img @click="sendMessage" class="send-message-button selectable" src="../../assets/img/send.png">
         </div>
       </div>

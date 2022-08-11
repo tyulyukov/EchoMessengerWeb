@@ -31,3 +31,9 @@ export function isThisYear(date) {
     const dateTime = new Date(date)
     return dateTime.getFullYear() == new Date().getFullYear()
 }
+
+export function isSameDate(date1, date2) {
+    const dateTime1 = new Date(date1)
+    const dateTime2 = new Date(date2)
+    return dateTime1.setHours(0,0,0,0) == dateTime2.setHours(0,0,0,0)
+}

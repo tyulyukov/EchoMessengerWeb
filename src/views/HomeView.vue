@@ -80,19 +80,59 @@ export default defineComponent({
       for (let i = 0; i < chatsStore.chats.length; i++) {
         if (chatsStore.chats[i]._id === message.chat._id || chatsStore.chats[i]._id === message.chat) {
           let messageIndex = chatsStore.chats[i].messages.findIndex(e => e._id === message._id)
+          message.sent = true
 
           if (messageIndex == -1)
             chatsStore.chats[i].messages.push(message)
           else
-            chatsStore.chats[i].messages[messageIndex].sent = true
-
+            chatsStore.chats[i].messages[messageIndex] = message
         }
       }
     })
 
     // TODO on send message failed add attribute to a message 'sendFailed'
 
+    this.socket.on('message edited', function (message) {
+      if (!chatsStore.chats)
+        return
 
+      for (let i = 0; i < chatsStore.chats.length; i++) {
+        if (chatsStore.chats[i]._id === message.chat._id || chatsStore.chats[i]._id === message.chat) {
+          let messageIndex = chatsStore.chats[i].messages.findIndex(e => e._id === message._id)
+
+          if (messageIndex >= 0)
+            chatsStore.chats[i].messages[messageIndex] = message
+        }
+      }
+    })
+
+    this.socket.on('message deleted', function (targetUserId, messageId) {
+      if (!chatsStore.chats)
+        return
+
+      for (let i = 0; i < chatsStore.chats.length; i++) {
+        if (chatsStore.chats[i].receiver._id === targetUserId || chatsStore.chats[i].sender._id === targetUserId) {
+          let messageIndex = chatsStore.chats[i].messages.findIndex(e => e._id === messageId)
+
+          if (messageIndex >= 0)
+            chatsStore.chats[i].messages.splice(messageIndex, 1)
+        }
+      }
+    })
+
+    this.socket.on('message read', function (targetUserId, messageId) {
+      if (!chatsStore.chats)
+        return
+
+      for (let i = 0; i < chatsStore.chats.length; i++) {
+        if (chatsStore.chats[i].receiver._id === targetUserId || chatsStore.chats[i].sender._id === targetUserId) {
+          let messageIndex = chatsStore.chats[i].messages.findIndex(e => e._id === messageId)
+
+          if (messageIndex >= 0)
+            chatsStore.chats[i].messages[messageIndex].haveSeen = true
+        }
+      }
+    })
 
     this.socket.connect();
 
