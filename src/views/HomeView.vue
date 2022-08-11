@@ -56,6 +56,7 @@ export default defineComponent({
   mounted() {
     const onlineStore = useOnlineStore()
     const chatsStore = useChatsStore()
+    const authUserStore = useAuthUserStore()
 
     this.socket.on('users online', function (users) {
       onlineStore.usersConnected(users)
@@ -82,11 +83,15 @@ export default defineComponent({
           let messageIndex = chatsStore.chats[i].messages.findIndex(e => e._id === message._id)
           message.sent = true
 
-          if (messageIndex == -1)
+          if (messageIndex == -1) {
             chatsStore.chats[i].messages.push(message)
-          else
-            chatsStore.chats[i].messages[messageIndex] = message
 
+            if (message.sender._id !== authUserStore.id)
+              chatsStore.chats[i].unreadMessagesCount++
+          }
+          else {
+            chatsStore.chats[i].messages[messageIndex] = message
+          }
           break
         }
       }

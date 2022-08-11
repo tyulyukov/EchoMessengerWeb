@@ -58,7 +58,7 @@ export default defineComponent({
   <DateCard v-if="!prevMessage || !isSameDate(prevMessage.sentAt, message.sentAt)"
             :date="new Date(message.sentAt)" />
 
-  <div v-bind:class="getMessageCardClass()">
+  <div v-bind:id="'message-' + message._id" v-bind:class="getMessageCardClass()">
     <div class="message-content">
       <div class="message-content-inner">
         <span>

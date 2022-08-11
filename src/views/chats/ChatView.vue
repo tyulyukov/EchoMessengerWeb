@@ -41,6 +41,9 @@ export default defineComponent({
     targetUser() {
       return this.chatsStore.getTargetUser(this.chat)
     },
+    unreadMessages() {
+      return this.chat.messages.filter(e => e.haveSeen == false && e.sender._id !== this.authUserStore.id)
+    },
     getStatusClass() {
       return this.onlineStore.isUserOnline(this.targetUser._id) ? "online-status" : "offline-status"
     }
@@ -49,6 +52,8 @@ export default defineComponent({
     scrollChanged(event) {
       let messagesContainer = document.getElementById('messages-list')
       this.chat.scrollBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop
+
+      this.readMessages()
 
       if (event.target.scrollTop === 0 && !this.chat.allMessagesLoaded) {
         let lastMessage = this.chat.messages[0]
@@ -61,6 +66,35 @@ export default defineComponent({
           if (lastMessageContainer)
             lastMessageContainer.scrollIntoView()
         })
+      }
+    },
+    readMessages() {
+      let messagesContainer = document.getElementById('messages-list')
+
+      if (!this.chat.loadingMessages) {
+        for (const unreadMessage of this.unreadMessages) {
+          const messageContainer = document.getElementById('message-' + unreadMessage._id)
+
+          if (messageContainer) {
+            const position = messageContainer.getBoundingClientRect()
+            const containerPosition = messagesContainer.getBoundingClientRect()
+
+            if (position.top + position.height > containerPosition.top
+             && position.bottom - position.height <= containerPosition.bottom) {
+              /*console.log(unreadMessage.content, 'is partially visible in screen');*/
+
+              this.socket.emit('read message', unreadMessage._id)
+
+              if (this.chat.unreadMessagesCount && this.chat.unreadMessagesCount > 0)
+                this.chat.unreadMessagesCount--
+
+              let messageIndex = this.chat.messages.findIndex(e => e._id === unreadMessage._id)
+
+              if (messageIndex >= 0)
+                this.chat.messages[messageIndex].haveSeen = true;
+            }
+          }
+        }
       }
     },
     loadMessages(callback) {
@@ -108,13 +142,25 @@ export default defineComponent({
   mounted() {
     if (!this.chat.viewLoaded) {
       this.chat.viewLoaded = true
+      let chatId = this.chat._id
+      let readMessages = this.readMessages
 
       let anchor = document.getElementById('bottom-anchor')
 
       this.loadMessages(function () {
         anchor.scrollIntoView()
-        setTimeout(function() { anchor.scrollIntoView() }, 1);
-        setTimeout(function() { anchor.scrollIntoView() }, 10);
+
+        /*setTimeout(function() {
+          anchor.scrollIntoView()
+        }, 1);*/
+
+        setTimeout(function() {
+          anchor.scrollIntoView()
+
+          const chatsStore = useChatsStore()
+          if (chatsStore.selectedChatId === chatId)
+            readMessages()
+        }, 10);
       })
     }
   },
@@ -126,13 +172,25 @@ export default defineComponent({
 
     if (!this.chat.viewLoaded) {
       this.chat.viewLoaded = true
+      let chatId = this.chat._id
+      let readMessages = this.readMessages
 
       let anchor = document.getElementById('bottom-anchor')
 
       this.loadMessages(function () {
         anchor.scrollIntoView()
-        setTimeout(function() { anchor.scrollIntoView() }, 1);
-        setTimeout(function() { anchor.scrollIntoView() }, 10);
+
+        /*setTimeout(function() {
+          anchor.scrollIntoView()
+        }, 1);
+*/
+        setTimeout(function() {
+          anchor.scrollIntoView()
+
+          const chatsStore = useChatsStore()
+          if (chatsStore.selectedChatId === chatId)
+            readMessages()
+        }, 10);
       })
     }
   }
@@ -177,7 +235,6 @@ export default defineComponent({
             </div>
 
             <MessageCard v-for="message in chat.messages"
-                         v-bind:id="'message-' + message._id"
                          :key="message._id"
                          :chat="chat"
                          :message="message" />
