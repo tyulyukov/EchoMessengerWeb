@@ -1,3 +1,4 @@
 # Echo Messenger Web
 
-Web version of Echo Messenger on vue3, with websockets
+Web version of Echo Messenger on vue-js
+https://echomessenger.netlify.app/
