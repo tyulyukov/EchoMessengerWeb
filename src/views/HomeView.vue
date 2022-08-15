@@ -239,22 +239,27 @@ export default defineComponent({
 }
 
 @media (max-width: 600px) {
+  .columns {
+    display: flex;
+  }
+
   .left-column {
-    max-width: none;
     width: 100vw;
-    left: 0;
-    z-index: 1;
+    max-width: none;
   }
 
   .middle-column {
-    z-index: 0;
+    display: none !important;
     width: 100vw;
-    position: fixed;
+    max-width: none;
   }
 
-  .left-column.closed {
-    position: fixed;
-    left: -100vw;
+  .left-column-closed .left-column {
+    display: none;
+  }
+
+  .left-column-closed .middle-column {
+    display: flex !important;
   }
 
   .button-close-chat {

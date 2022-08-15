@@ -139,9 +139,9 @@ export default defineComponent({
       this.chat.messages.push(message)
     },
     closeChat() {
-      let leftColumn = document.getElementsByClassName('left-column')[0]
-      if (leftColumn.classList.contains('closed'))
-        leftColumn.classList.remove('closed')
+      let columns = document.getElementsByClassName('columns')[0]
+      if (columns.classList.contains('left-column-closed'))
+        columns.classList.remove('left-column-closed')
     }
   },
   mounted() {

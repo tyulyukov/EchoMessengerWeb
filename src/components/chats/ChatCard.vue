@@ -53,9 +53,9 @@ export default defineComponent({
     cardClick() {
       this.chatsStore.selectChat(this.chat)
 
-      let leftColumn = document.getElementsByClassName('left-column')[0]
-      if (!leftColumn.classList.contains('closed'))
-        leftColumn.classList.add('closed')
+      let columns = document.getElementsByClassName('columns')[0]
+      if (!columns.classList.contains('left-column-closed'))
+        columns.classList.add('left-column-closed')
     }
   }
 })
