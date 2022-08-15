@@ -476,6 +476,7 @@ export default defineComponent({
   color: var(--vt-c-white);
   border: none;
   font-weight: normal;
+  font-size: 12pt;
   resize: none;
   text-align: left;
   overflow: auto;
