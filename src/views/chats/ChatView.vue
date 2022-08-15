@@ -475,7 +475,7 @@ export default defineComponent({
   background-color: var(--vt-c-secondary-steel-gray);
   color: var(--vt-c-white);
   border: none;
-  font-weight: lighter;
+  font-weight: normal;
   resize: none;
   text-align: left;
   overflow: auto;
