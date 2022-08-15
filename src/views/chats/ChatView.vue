@@ -138,6 +138,11 @@ export default defineComponent({
 
       this.chat.messages.push(message)
     },
+    closeChat() {
+      let leftColumn = document.getElementsByClassName('left-column')[0]
+      if (leftColumn.classList.contains('closed'))
+        leftColumn.classList.remove('closed')
+    }
   },
   mounted() {
     if (!this.chat.viewLoaded) {
@@ -203,6 +208,11 @@ export default defineComponent({
 <template>
   <div class="chat-info-row">
     <div class="chat-info-container">
+      <img @click="closeChat"
+           class="button-close-chat"
+           src="../../assets/img/arrow-down.png"
+           alt="Back to chats"/>
+
       <div class="chat-info">
         <div class="avatar" v-bind:style="'background-image: url(' + targetUser.avatarUrl + ')'"></div>
 
@@ -280,6 +290,7 @@ export default defineComponent({
 
 .chat-info-container {
   overflow: hidden;
+  display: flex;
 }
 
 .chat-info {
@@ -294,6 +305,21 @@ export default defineComponent({
   justify-content: center;
   flex-grow: 1;
   overflow: hidden;
+}
+
+.button-close-chat {
+  display: none;
+  transform: rotateZ(90deg) scale(1);
+  --size: 1.65rem;
+  width: var(--size);
+  height: var(--size);
+  transition: 300ms;
+  cursor: pointer;
+  margin: auto 1rem auto 0;
+}
+
+.button-close-chat:hover {
+  transform: rotateZ(90deg) scale(0.8);
 }
 
 .chat-info .avatar {

@@ -1,6 +1,5 @@
 {
   "name": "echo-web",
-  "proxy": "http://localhost:4224",
   "version": "0.0.1",
   "scripts": {
     "dev": "vite",

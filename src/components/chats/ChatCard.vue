@@ -11,7 +11,7 @@ import {useOnlineStore} from "../../stores/online";
 import UserTypingIndicator from "./UserTypingIndicator.vue";
 
 export default defineComponent({
-  components: {UserTypingIndicator, NotificationBadge, CheckMarks, OnlineStatus },
+  components: { UserTypingIndicator, NotificationBadge, CheckMarks, OnlineStatus },
   setup() {
     const chatsStore = useChatsStore()
     const apiStore = useApiStore()
@@ -49,13 +49,20 @@ export default defineComponent({
         return "card card-active"
 
       return "card"
+    },
+    cardClick() {
+      this.chatsStore.selectChat(this.chat)
+
+      let leftColumn = document.getElementsByClassName('left-column')[0]
+      if (!leftColumn.classList.contains('closed'))
+        leftColumn.classList.add('closed')
     }
   }
 })
 </script>
 
 <template>
-  <div @click="chatsStore.selectChat(this.chat)" v-bind:class="getCardClass()">
+  <div @click="cardClick" v-bind:class="getCardClass()">
     <div class="avatar" v-bind:style="'background-image: url(' + targetUser.avatarUrl + ')'">
       <OnlineStatus :chatId="this.chat._id"
                     :isOnline="onlineStore.isUserOnline(targetUser._id)" />

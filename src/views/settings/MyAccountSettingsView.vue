@@ -37,6 +37,11 @@ export default defineComponent({
     },
     logOut() {
       this.authUserStore.logOut()
+    },
+    closeSetting() {
+      let leftColumn = document.getElementsByClassName('left-column')[0]
+      if (leftColumn.classList.contains('closed'))
+        leftColumn.classList.remove('closed')
     }
   }
 })
@@ -44,6 +49,11 @@ export default defineComponent({
 
 <template>
   <div class="rows">
+    <img @click="closeSetting"
+         class="button-close-chat"
+         src="../../assets/img/arrow-down.png"
+         alt="Back to settings"/>
+
     <div class="settings-header-row">
       <div class="settings-header">
         <span>My account</span>
@@ -229,5 +239,30 @@ export default defineComponent({
 
 .submit-group .btn-submit {
   margin: 0 0 0 0.45rem;
+}
+
+.button-close-chat {
+  display: none;
+  transform: rotateZ(90deg) scale(1);
+  --size: 1.65rem;
+  width: var(--size);
+  height: var(--size);
+  transition: 300ms;
+  cursor: pointer;
+  margin: auto 1rem auto 0;
+}
+
+.button-close-chat:hover {
+  transform: rotateZ(90deg) scale(0.8);
+}
+
+@media (max-width: 600px) {
+  .avatar {
+    --small-avatar-diameter: 5rem !important;
+    min-width: var(--small-avatar-diameter) !important;
+    min-height: var(--small-avatar-diameter) !important;
+    max-width: var(--small-avatar-diameter) !important;
+    max-height: var(--small-avatar-diameter) !important;
+  }
 }
 </style>

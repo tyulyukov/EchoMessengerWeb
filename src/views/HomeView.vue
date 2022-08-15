@@ -215,6 +215,7 @@ export default defineComponent({
   background-color: var(--vt-c-main-vulkan);
   padding: 1rem;
   overflow: auto;
+  transition: 300ms;
 }
 
 @media (min-width: 1281px){
@@ -234,6 +235,30 @@ export default defineComponent({
 @media (min-width: 961px) {
   .left-column {
     max-width: 40vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .left-column {
+    max-width: none;
+    width: 100vw;
+    left: 0;
+    z-index: 1;
+  }
+
+  .middle-column {
+    z-index: 0;
+    width: 100vw;
+    position: fixed;
+  }
+
+  .left-column.closed {
+    position: fixed;
+    left: -100vw;
+  }
+
+  .button-close-chat {
+    display: flex !important;
   }
 }
 

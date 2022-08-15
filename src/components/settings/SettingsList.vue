@@ -4,6 +4,13 @@ import { defineComponent } from "vue";
 export default defineComponent({
   setup() {
 
+  },
+  methods: {
+    settingsCardClick() {
+      let leftColumn = document.getElementsByClassName('left-column')[0]
+      if (!leftColumn.classList.contains('closed'))
+        leftColumn.classList.add('closed')
+    }
   }
 })
 </script>
@@ -18,7 +25,7 @@ export default defineComponent({
     </div>
 
     <div class="settings-list">
-      <div class="settings-card settings-card-active">
+      <div @click="settingsCardClick" class="settings-card settings-card-active">
         <span>My account</span>
       </div>
     </div>
