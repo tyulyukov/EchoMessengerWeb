@@ -36,9 +36,10 @@ export default defineComponent({
 }
 
 .date-card .line-date-card {
-  height: 0.01rem;
+  height: 1px;
   width: 100%;
   background-color: var(--color-text);
   margin: auto 0.5rem;
+  border-radius: 1rem;
 }
 </style>
