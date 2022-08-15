@@ -23,6 +23,10 @@ export default defineComponent({
     createChat() {
       this.$emit('closeSearch')
       this.chatsStore.createChat(this.user._id)
+
+      let columns = document.getElementsByClassName('columns')[0]
+      if (!columns.classList.contains('left-column-closed'))
+        columns.classList.add('left-column-closed')
     }
   }
 })

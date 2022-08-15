@@ -240,53 +240,38 @@ export default defineComponent({
 
 @media (max-width: 600px) {
   .columns {
-    display: flex;
+    overflow: hidden;
   }
 
   .left-column {
     width: 100vw;
     max-width: none;
+    position: fixed;
+    transition: 350ms ease;
+    transform: translateX(0vw);
   }
 
   .middle-column {
-    display: none !important;
     width: 100vw;
     max-width: none;
+    transition: 350ms ease;
+    position: fixed;
+    transform: translateX(100vw);
   }
 
   .left-column-closed .left-column {
-    display: none;
+    transform: translateX(-100vw);
   }
 
   .left-column-closed .middle-column {
     display: flex !important;
+    transform: translateX(0vw);
   }
 
   .button-close-chat {
     display: flex !important;
   }
 }
-
-/*@media (max-width: 600px) {
-  .left-column {
-    max-width: none;
-    transform: translate3d(-20vw, 0, 0);
-    left: env(safe-area-inset-left) !important;
-    width: calc(100vw - env(safe-area-inset-left)) !important;
-  }
-}
-
-@media (max-width: 925px) {
-  .left-column {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: calc(1vh*100);
-    width: 26.5rem !important;
-    transform: translate3d(-5rem, 0, 0);
-    transition: transform 300ms cubic-bezier(0.33, 1, 0.68, 1);
-  }
-}*/
 
 .middle-column {
   display: flex;
