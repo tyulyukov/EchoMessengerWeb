@@ -116,12 +116,24 @@ export const useChatsStore = defineStore('chats', {
                     if (res && res.status === 200) {
                         return res.json()
                     }
+                    else if (res && res.status === 400) {
+                        this.error = "Empty fields"
+                        return;
+                    }
                     else if (res && res.status === 401) {
                         this.error = "Not authorized"
 
                         const authUserStore = useAuthUserStore()
                         authUserStore.logOut()
 
+                        return;
+                    }
+                    else if (res && res.status === 403) {
+                        this.error = "Access denied, user is not present in this chat"
+                        return;
+                    }
+                    else if (res && res.status === 404) {
+                        this.error = "Chat not found"
                         return;
                     }
                     else if (res && res.status === 500) {

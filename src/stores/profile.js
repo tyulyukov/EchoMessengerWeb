@@ -104,8 +104,12 @@ export const useSettingsProfileStore = defineStore('settings/profile', {
 
                         return;
                     }
+                    else if (res && res.status === 415) {
+                        this.error = "File has unsupported type. Supported types: .png, .jpg, .jpeg, .gif, .webp, .bmp, .heic, .heif"
+                        return;
+                    }
                     else if (res && res.status === 422) {
-                        this.error = "File has unsupported type. Supported types: .jpg, .png"
+                        this.error = "File is bigger than 10MB"
                         return;
                     }
                     else if (res && res.status === 500) {
