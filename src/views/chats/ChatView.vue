@@ -13,6 +13,7 @@ import UserTypingIndicator from "../../components/chats/UserTypingIndicator.vue"
 
 export default defineComponent({
   components: { UserTypingIndicator, MessageCard, DateCard },
+  emits: ['openContextMenu'],
   setup() {
     const chatsStore = useChatsStore()
     const apiStore = useApiStore()
@@ -142,6 +143,9 @@ export default defineComponent({
       let columns = document.getElementsByClassName('columns')[0]
       if (columns.classList.contains('left-column-closed'))
         columns.classList.remove('left-column-closed')
+    },
+    openContextMenu(event) {
+      this.$emit('openContextMenu', event)
     }
   },
   mounted() {
@@ -250,7 +254,8 @@ export default defineComponent({
             <MessageCard v-for="message in chat.messages"
                          :key="message._id"
                          :chat="chat"
-                         :message="message" />
+                         :message="message"
+                         @openContextMenu="this.openContextMenu" />
             <div id="bottom-anchor"></div>
           </div>
         </div>

@@ -8,6 +8,7 @@ import { useChatsStore } from "../../stores/chats";
 
 export default defineComponent({
   components: { CheckMarks, DateCard },
+  emits: ['openContextMenu'],
   setup() {
     const authUserStore = useAuthUserStore()
     const chatsStore = useChatsStore()
@@ -27,6 +28,12 @@ export default defineComponent({
     chat: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      contextMenuOpened: false,
+      contextMenuEvent: undefined
     }
   },
   computed: {
@@ -49,6 +56,9 @@ export default defineComponent({
         classList += ' own'
 
       return classList
+    },
+    openContextMenu(event) {
+      this.$emit('openContextMenu', event)
     }
   }
 })
@@ -59,7 +69,7 @@ export default defineComponent({
             :date="new Date(message.sentAt)" />
 
   <div v-bind:id="'message-' + message._id" v-bind:class="getMessageCardClass()">
-    <div class="message-content">
+    <div @contextmenu="openContextMenu" class="message-content">
       <div class="message-content-inner">
         <div class="replied-on-message" v-if="message.repliedOn">
           <div class="message-text">

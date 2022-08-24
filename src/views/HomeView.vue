@@ -9,11 +9,12 @@ import SelectChatView from "./chats/SelectChatView.vue";
 import ChatView from "./chats/ChatView.vue";
 import SettingsList from "../components/settings/SettingsList.vue";
 import MyAccountSettingsView from "./settings/MyAccountSettingsView.vue";
+import ContextMenu from "../components/ContextMenu.vue";
 import createSocket from "../util/socket";
 
 export default defineComponent({
-  components: { MyAccountSettingsView, SettingsList, SelectChatView, ChatsList, ChatView },
-  emits: ['openChats', 'openSettings'],
+  components: { MyAccountSettingsView, SettingsList, SelectChatView, ChatsList, ChatView, ContextMenu },
+  emits: ['openChats', 'openSettings', 'openContextMenu', 'closeContextMenu'],
   setup() {
     const apiStore = useApiStore()
     const authUserStore = useAuthUserStore()
@@ -33,6 +34,8 @@ export default defineComponent({
   data() {
     return {
       openedTab: 'chats',
+      contextMenuOpened: false,
+      contextMenuEvent: undefined,
     }
   },
   computed: {
@@ -51,6 +54,18 @@ export default defineComponent({
     },
     openChats() {
       this.openedTab = this.chatsTabName
+    },
+    openContextMenu(event) {
+      /*console.log(event)*/
+      event.preventDefault()
+
+      this.contextMenuEvent = event
+      console.log(event.clientX, event.clientY)
+      this.contextMenuOpened = true
+    },
+    closeContextMenu(event) {
+      /*console.log('close menu', event)*/
+      this.contextMenuOpened = false
     }
   },
   mounted() {
@@ -177,6 +192,11 @@ export default defineComponent({
 </script>
 
 <template>
+  <ContextMenu v-if="this.contextMenuOpened && this.contextMenuEvent"
+               :clientX="this.contextMenuEvent.clientX"
+               :clientY="this.contextMenuEvent.clientY"
+               @closeContextMenu="this.closeContextMenu"/>
+
   <div v-if="!authUserStore.loggedIn" class="center">
     <div class="spinner-border"></div>
   </div>
@@ -190,7 +210,8 @@ export default defineComponent({
         <SelectChatView v-if="this.openedTab == this.chatsTabName && !chatsStore.$state.selectedChatId" />
         <ChatView v-else-if="this.openedTab == this.chatsTabName"
                   :socket="this.socket"
-                  :chat="chatsStore.getChatById(chatsStore.$state.selectedChatId)" />
+                  :chat="chatsStore.getChatById(chatsStore.$state.selectedChatId)"
+                  @openContextMenu="this.openContextMenu"/>
         <MyAccountSettingsView v-else-if="this.openedTab == this.settingsTabName" />
       </div>
     </div>
