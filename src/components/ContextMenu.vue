@@ -13,7 +13,9 @@ export default defineComponent({
             ? window.innerWidth - contextMenu.scrollWidth - 20
             : this.clientX;*/
 
-    console.log(this.clientX, this.clientY)
+    return {
+
+    }
   },
   props: {
     clientX: {
@@ -34,12 +36,14 @@ export default defineComponent({
 </script>
 
 <template>
-  <div @mousedown="closeContextMenu" class="context-menu-wrapper">
-    <ul class="context-menu">
-      <li><button>Reply</button></li>
-      <li><button>Edit</button></li>
-      <li><button>Delete</button></li>
-    </ul>
+  <div class="context-menu-wrapper">
+    <div class="context-menu-container">
+      <ul class="context-menu">
+        <li><button>Reply</button></li>
+        <li><button>Edit</button></li>
+        <li><button>Delete</button></li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -51,6 +55,11 @@ export default defineComponent({
   z-index: 999;
   top: 0;
   left: 0;
+}
+
+.context-menu-container {
+  top: v-bind(clientX);
+  left: v-bind(clientY);
 }
 
 .context-menu {
@@ -73,8 +82,6 @@ export default defineComponent({
   list-style: none;
   margin: 4px;
   padding: 0;
-  top: v-bind(clientX);
-  left: v-bind(clientY);
   display: flex;
   flex-direction: column;
   z-index: 9999;

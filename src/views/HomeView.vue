@@ -195,7 +195,8 @@ export default defineComponent({
   <ContextMenu v-if="this.contextMenuOpened && this.contextMenuEvent"
                :clientX="this.contextMenuEvent.clientX"
                :clientY="this.contextMenuEvent.clientY"
-               @closeContextMenu="this.closeContextMenu"/>
+               @closeContextMenu="this.closeContextMenu"
+               @mouseup="this.closeContextMenu"/>
 
   <div v-if="!authUserStore.loggedIn" class="center">
     <div class="spinner-border"></div>
